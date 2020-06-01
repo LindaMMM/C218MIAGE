@@ -3,4 +3,4 @@
 
 
 <?php $content = ob_get_clean(); ?>
-<?php require('../src/templates/TmpBack.php'); ?>
+<?php require('./src/templates/TmpBack.php'); ?>

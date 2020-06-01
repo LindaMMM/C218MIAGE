@@ -9,7 +9,7 @@ $(document).ready(function (e) {
         // Empêcher le rechargement de la page.
         event.preventDefault(); 
         $.ajax({dataType: "JSON",
-            type: "GET", url: "../src/ajax/deco.php",
+            type: "GET", url: "./src/ajax/deco.php",
             success: function (response) {
                 code = response.code;
                 msg = response.message;

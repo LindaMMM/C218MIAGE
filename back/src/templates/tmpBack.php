@@ -13,11 +13,11 @@ header("Pragma:no-cache");
   <link rel="apple-touch-icon" href="favicon.png">
 
   <!--link rel="stylesheet" href="./src/public/css/night.css"-->
-  <link rel="stylesheet" href="../src/public/css/main.css">
-  <link rel="stylesheet" href="../src/public/css/mystyles.css">
+  <link rel="stylesheet" href="./src/public/css/main.css">
+  <link rel="stylesheet" href="./src/public/css/mystyles.css">
 
-  <link rel="stylesheet" href="../src/public/script/datatables/1.10.16/jquery.dataTables.min.css" />
-  <link rel="stylesheet" href="../src/public/bulma-0.8.0/dataTables.bulma.min.css"/>
+  <link rel="stylesheet" href="./src/public/script/datatables/1.10.16/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="./src/public/bulma-0.8.0/dataTables.bulma.min.css"/>
 
   <meta name="theme-color" content="#fafafa">
 </head>
@@ -30,7 +30,7 @@ header("Pragma:no-cache");
       <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item" href=".">
-            <img src="../src/public/img/Logo.png" width="112" height="28">
+            <img src="./src/public/img/Logo.png" width="112" height="28">
           </a>
 
           <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -93,16 +93,16 @@ header("Pragma:no-cache");
 
 
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script src="../src/public/script/modernizr/modernizr-3.7.1.min.js"></script>
+  <script src="./src/public/script/modernizr/modernizr-3.7.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>
-    window.jQuery || document.write('<script src="../src/public/script/jquery/jquery-3.4.1.min.js"><\/script>')
+    window.jQuery || document.write('<script src="./src/public/script/jquery/jquery-3.4.1.min.js"><\/script>')
   </script>
-  <script src="../src/public/script/deconnect.js"></script>
-  <script src="../src/public/script/plugins.js"></script>
-  <script src="../src/public/script/datatables/1.10.16/jquery.dataTables.min.js"></script>
-  <script src="../src/public/bulma-0.8.0/dataTables.bulma.min.js"></script>
-  <script src="../src/public/script/lodash.js"></script>
+  <script src="./src/public/script/deconnect.js"></script>
+  <script src="./src/public/script/plugins.js"></script>
+  <script src="./src/public/script/datatables/1.10.16/jquery.dataTables.min.js"></script>
+  <script src="./src/public/bulma-0.8.0/dataTables.bulma.min.js"></script>
+  <script src="./src/public/script/lodash.js"></script>
   <?= $js ?>
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
   <script>
@@ -173,7 +173,6 @@ header("Pragma:no-cache");
       });
   </script>
 
-  <script src="https://www.google-analytics.com/analytics.js" async></script>
 </body>
 
 </html>
