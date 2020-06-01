@@ -170,5 +170,5 @@
     </div>
 
     <?php $content = ob_get_clean(); ?>
-    <?php $js = '<script src="../src/public/script/front/register.js"></script>' ?>
-    <?php require('../src/templates/tmpFront.php'); ?>
+    <?php $js = '<script src="./src/public/script/front/register.js"></script>' ?>
+    <?php require('./src/templates/tmpFront.php'); ?>

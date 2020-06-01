@@ -21,7 +21,7 @@ window.loadPanier = function (liste) {
 window.deletefilm = function (idfilm){
     $.ajax({
         dataType: "JSON",
-        type: "POST", url: "../src/ajax/panierAjax.php", data: { 'type': 'delPanier', 'movie':idfilm },
+        type: "POST", url: "./src/ajax/panierAjax.php", data: { 'type': 'delPanier', 'movie':idfilm },
         success: function (response) {
             code = response.code;
             msg = response.message;
@@ -51,7 +51,7 @@ $(document).ready(function (e) {
     clearMessageErr();
     $.ajax({
         dataType: "JSON",
-        type: "POST", url: "../src/ajax/panierAjax.php", data: { 'type': 'get' },
+        type: "POST", url: "./src/ajax/panierAjax.php", data: { 'type': 'get' },
         success: function (response) {
             code = response.code;
             msg = response.message;
@@ -75,7 +75,7 @@ $(document).ready(function (e) {
     $('#btnsave').on('click', function(){
         $.ajax({
             dataType: "JSON",
-            type: "POST", url: "../src/ajax/panierAjax.php", data: { 'type': 'save' },
+            type: "POST", url: "./src/ajax/panierAjax.php", data: { 'type': 'save' },
             success: function (response) {
                 code = response.code;
                 msg = response.message;
@@ -99,7 +99,7 @@ $(document).ready(function (e) {
     $('#btncancel').on('click', function(){
         $.ajax({
             dataType: "JSON",
-            type: "POST", url: "../src/ajax/panierAjax.php", data: { 'type': 'viderPanier' },
+            type: "POST", url: "./src/ajax/panierAjax.php", data: { 'type': 'viderPanier' },
             success: function (response) {
                 code = response.code;
                 msg = response.message;

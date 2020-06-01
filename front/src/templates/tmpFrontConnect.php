@@ -28,7 +28,7 @@ header("Pragma:no-cache");
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item" href=".">
-            <img src="../src/public/img/logo.png" width="112" height="28">
+            <img src="./src/public/img/logo.png" width="112" height="28">
           </a>
         </div class="navbar-brand">
         <div id="navbarBasicExample" class="navbar-menu">
@@ -81,17 +81,17 @@ header("Pragma:no-cache");
 
 
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script src="../src/public/script/modernizr/modernizr-3.7.1.min.js"></script>
+  <script src="./src/public/script/modernizr/modernizr-3.7.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>
-    window.jQuery || document.write('<script src="../src/public/script/jquery/jquery-3.4.1.min.js"><\/script>')
+    window.jQuery || document.write('<script src="./src/public/script/jquery/jquery-3.4.1.min.js"><\/script>')
   </script>
-  <script src="../src/public/script/deconnect.js"></script>
-  <script src="../src/public/script/plugins.js"></script>
-  <script src="../src/public/script/datatables/1.10.16/jquery.dataTables.min.js"></script>
-  <script src="../src/public/bulma-0.8.0/dataTables.bulma.min.js"></script>
-  <script src="../src/public/script/lodash.js"></script>
-  <script src="../src/public/script/front/menu.js"></script>
+  <script src="./src/public/script/deconnect.js"></script>
+  <script src="./src/public/script/plugins.js"></script>
+  <script src="./src/public/script/datatables/1.10.16/jquery.dataTables.min.js"></script>
+  <script src="./src/public/bulma-0.8.0/dataTables.bulma.min.js"></script>
+  <script src="./src/public/script/lodash.js"></script>
+  <script src="./src/public/script/front/menu.js"></script>
   <?= $js ?>
 
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
@@ -163,7 +163,6 @@ header("Pragma:no-cache");
       });
   </script>
 
-  <script src="https://www.google-analytics.com/analytics.js" async></script>
 </body>
 
 </html>

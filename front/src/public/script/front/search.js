@@ -63,7 +63,7 @@ $(document).ready(function (e) {
     clearMessageErr();
     $.ajax({
         dataType: "JSON",
-        type: "POST", url: "../src/ajax/movieAjax.php", data: { 'type': 'listCategorie' },
+        type: "POST", url: "./src/ajax/movieAjax.php", data: { 'type': 'listCategorie' },
         success: function (response) {
             code = response.code;
             msg = response.message;
@@ -93,7 +93,7 @@ $(document).ready(function (e) {
     function searchGenre(){
     $.ajax({
         dataType: "JSON",
-        type: "POST", url: "../src/ajax/movieAjax.php", data: { 'type': 'listGenre' },
+        type: "POST", url: "./src/ajax/movieAjax.php", data: { 'type': 'listGenre' },
         success: function (response) {
             code = response.code;
             msg = response.message;
@@ -144,7 +144,7 @@ $(document).ready(function (e) {
         filter.categorie = cat.substring(0, cat.length - 2);;
         $.ajax({
             dataType: "JSON",
-            type: "POST", url: "../src/ajax/movieAjax.php", data: { 'type': 'search', 'filter': JSON.stringify(filter) },
+            type: "POST", url: "./src/ajax/movieAjax.php", data: { 'type': 'search', 'filter': JSON.stringify(filter) },
             success: function (response) {
                 code = response.code;
                 msg = response.message;

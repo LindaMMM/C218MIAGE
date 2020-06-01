@@ -8,7 +8,7 @@
         <p class="subtitle has-text-white">Votre location de DVD</p>
         <div class="box">
             <figure class="avatar">
-                <img src="../src/public/img/logo.png">
+                <img src="./src/public/img/logo.png">
             </figure>
             <div id="err"></div>
             <form id="idform">
@@ -39,6 +39,6 @@
 </div>
 
 <?php $content = ob_get_clean(); ?>
-<?php $js = '<script src="../src/public/script/front/login.js"></script>'; ?>
+<?php $js = '<script src="./src/public/script/front/login.js"></script>'; ?>
 
-<?php require('../src/templates/tmpFront.php'); ?>
+<?php require('./src/templates/tmpFront.php'); ?>

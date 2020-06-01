@@ -23,7 +23,7 @@ $(document).ready(function (e) {
     var msg;
     var liste=[];
     $.ajax({dataType: "JSON",
-    type: "POST", url: "../src/ajax/movieAjax.php", data: {'type': 'top4'},
+    type: "POST", url: "./src/ajax/movieAjax.php", data: {'type': 'top4'},
     success: function (response) {
         code = response.code;
         msg = response.message;

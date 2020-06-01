@@ -59,7 +59,7 @@ $(document).ready(function (e) {
     
     
     $.ajax({dataType: "JSON",
-    type: "POST", url: "../src/ajax/movieAjax.php", data: {'type': 'listForfait'},
+    type: "POST", url: "./src/ajax/movieAjax.php", data: {'type': 'listForfait'},
     success: function (response) {
         code = response.code;
         msg = response.message;
@@ -112,7 +112,7 @@ $(document).ready(function (e) {
     })
     $('#savePaied').on('click', function () {
         $.ajax({dataType: "JSON",
-        type: "POST", url: "../src/ajax/clientAjax.php", data: {'type': 'create','value':JSON.stringify(client) },
+        type: "POST", url: "./src/ajax/clientAjax.php", data: {'type': 'create','value':JSON.stringify(client) },
         success: function (response) {
             code = response.code;
             msg = response.message;

@@ -5,7 +5,7 @@ $(document).ready(function (e) {
 
     $('#btnAddPanier').on('click',function(){
         $.ajax({dataType: "JSON",
-        type: "POST", url: "../src/ajax/panierAjax.php", data: {'type': 'addPanier'},
+        type: "POST", url: "./src/ajax/panierAjax.php", data: {'type': 'addPanier'},
     success: function (response) {
         code = response.code;
         msg = response.message;

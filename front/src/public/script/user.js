@@ -6,7 +6,7 @@ $(document).ready(function (e) {
         "dom": '<"field is-horizontal"l> <"field is-horizontal"f>rt<"bottom"p><"clear">',
         "ajax": {
             "type": "POST",
-            "url": "../src/ajax/lstUserAjax.php",
+            "url": "./src/ajax/lstUserAjax.php",
             "dataSrc": "aaData",
             "data": function (d) {
                 return $.extend({}, d, {

@@ -1,7 +1,7 @@
 <?php
 
-require_once "../src/class/config.php";
-require('../src/controller/accueil.php');
+require_once "./src/class/config.php";
+require('./src/controller/accueil.php');
 date_default_timezone_set('Europe/Paris');
 
 if (isset($_GET['page'])) {

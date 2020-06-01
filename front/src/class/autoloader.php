@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-spl_autoload_register(array('autoloader', 'autoload'));
+spl_autoload_register(array('ConfigAutoLoader', 'autoload'));
 
 /**
  * Class autoloader. 

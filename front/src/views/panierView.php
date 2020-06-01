@@ -1,5 +1,7 @@
 <?php $title = 'Panier'; ?>
-<?php ob_start(); ?>
+<?php ob_start(); echo "<script> 
+var affiche= '".MEDIA_AFFICHE.
+"';</script>";?>
 
 <div id="page" class="box">
     <div id="err"></div>
@@ -16,13 +18,13 @@
 
 
 <?php $content = ob_get_clean(); ?>
-<?php $js = "<script src='../src/public/script/front/panier.js'></script>" .
+<?php $js = "<script src='./src/public/script/front/panier.js'></script>" .
     "<script type='text/template' class='TemplatePanier'>
     <section class='panier' >
 <article class='media'>
     <figure class='media-left'>
         <p class='image is-64'>
-            <img src='../film/affiche/{{film.view}}'>
+            <img src='{%print(affiche+film.view)%}'>
         </p>
     </figure>
     <div class='media-content'>
@@ -53,6 +55,6 @@
 
 <?php $client = $_SESSION["client"];
 if (isset($client))
-    require('../src/templates/tmpFrontConnect.php');
+    require('./src/templates/tmpFrontConnect.php');
 else
-    require('../src/templates/tmpFront.php'); ?>
+    require('./src/templates/tmpFront.php'); ?>

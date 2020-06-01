@@ -1,5 +1,8 @@
 <?php $title = 'Recherche'; ?>
 <?php ob_start();
+echo "<script> 
+var affiche= '".MEDIA_AFFICHE.
+"';</script>";
     $search =$_SESSION['search'];
     unset($_SESSION['search']);
 ?>
@@ -56,7 +59,7 @@
 
 
     <?php $content = ob_get_clean(); ?>
-    <?php $js = '<script src="../src/public/script/front/search.js"></script>' .
+    <?php $js = '<script src="./src/public/script/front/search.js"></script>' .
         " <script type='text/template' class='TemplateCategorie'>
     <a class='panel-block is-active' id_cat={{id}}> <span class='panel-icon'>
     <i class='fas fa-book' aria-hidden='true'></i>
@@ -72,13 +75,13 @@
         "<script type='text/template' class='TemplateMovie'>
     <tr>
         <td> <p class='image is-64'>
-        <img src='../film/affiche/{{mainview}}'>
+        <img src='{% print(affiche+mainview)%}'>
     </p></td>
         <td><a href='./index.php?page=fiche&nb=178900-{{idMovie}}'>{{name}}</a></td>
     </tr>
 </script>"; ?>
     <?php $client = $_SESSION["client"];
     if (isset($client))
-        require('../src/templates/tmpFrontConnect.php');
+        require('./src/templates/tmpFrontConnect.php');
     else
-        require('../src/templates/tmpFront.php'); ?>
+        require('./src/templates/tmpFront.php'); ?>

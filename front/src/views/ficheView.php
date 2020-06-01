@@ -19,7 +19,7 @@ $movie = MovieService::GetMovieById($id,null);?>
         <article class="media">
             <div class="media-left">
                 <figure class="image">
-                    <img src="../film/affiche/<?php echo ($movie->getAffiche()); ?>" alt="Image">
+                    <img src="<?php echo MEDIA_AFFICHE.($movie->getAffiche()); ?>" alt="Image">
                 </figure>
             </div>
             <div class="media-content">
@@ -43,7 +43,7 @@ $movie = MovieService::GetMovieById($id,null);?>
         <article class="media">
             <div class="media-content">
             <video class="image "  controls>
-                <source src="../film/video/<?php echo ($movie->getVideo()); ?>" type="video/mp4">
+                <source src="<?php echo MEDIA_VIDEO.($movie->getVideo()); ?>" type="video/mp4">
             </video> 
             </div>
         </article>
@@ -52,9 +52,9 @@ $movie = MovieService::GetMovieById($id,null);?>
 </div>
 
 <?php $content = ob_get_clean(); ?>
-<?php $js = '<script src="../src/public/script/front/ficheMovie.js"></script>'; ?>
-<?php $roles = $_SESSION["user_roles"];
-    if(isset($roles))
-        require('../src/templates/tmpFrontConnect.php');
+<?php $js = '<script src="./src/public/script/front/ficheMovie.js"></script>'; ?>
+<?php $client = $_SESSION["client"];
+    if(isset($client))
+        require('./src/templates/tmpFrontConnect.php');
     else
-        require('../src/templates/tmpFront.php'); ?>
+        require('./src/templates/tmpFront.php'); ?>

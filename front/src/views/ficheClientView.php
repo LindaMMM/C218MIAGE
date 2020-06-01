@@ -160,9 +160,9 @@
 </div>
 
 <?php $content = ob_get_clean(); ?>
-<?php $js = '<script src="../src/public/script/front/ficheclient.js"></script>'; ?>
-<?php $roles = $_SESSION["user_roles"];
-if (isset($roles))
-    require('../src/templates/tmpFrontConnect.php');
-else
-    require('../src/templates/tmpFront.php'); ?>
+<?php $js = '<script src="./src/public/script/front/ficheclient.js"></script>'; ?>
+<?php $client = $_SESSION["client"];
+    if(isset($client))
+        require('./src/templates/tmpFrontConnect.php');
+    else
+        require('./src/templates/tmpFront.php'); ?>

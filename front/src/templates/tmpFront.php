@@ -78,7 +78,7 @@ header("Pragma:no-cache");
 
 
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script src="../src/public/script/modernizr/modernizr-3.7.1.min.js"></script>
+  <script src="./src/public/script/modernizr/modernizr-3.7.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>
     window.jQuery || document.write('<script src="./src/public/script/jquery/jquery-3.4.1.min.js"><\/script>')
@@ -160,7 +160,6 @@ header("Pragma:no-cache");
       });
   </script>
 
-  <script src="https://www.google-analytics.com/analytics.js" async></script>
 </body>
 
 </html>
