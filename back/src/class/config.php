@@ -1,8 +1,7 @@
 <?php
 $d="";
-
-while(!file_exists($d."index.php"))$d.="../";
-define("__DIR_PARENT__",$d);
+ while(!file_exists($d."index.php"))$d.="../";
+ define("__DIR_PARENT__",$d);
 
 require __DIR_PARENT__.'src/class/autoloader.php';
 

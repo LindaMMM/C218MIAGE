@@ -106,11 +106,34 @@ class Movie implements JsonSerializable
     /**
      *  Recherche des 4 derniers films en base de donnée
      */
-    public function getTop4()
+    public function getTop4($type)
     {
         try {
 
-            $query = "SELECT `idMovie`,
+            if ($type == 'child') {
+                $query = "SELECT `idMovie`,
+                `idcategory`,
+                `name`,
+                `description`,
+                `mainview`,
+                `dateout`,
+                `VideoBO`,
+                `Realisateur`,
+                `Producteur`,
+                `movieActive` FROM `movie` where movieActive = 1 and idcategory = 1 order by idMovie desc limit 4";
+            } else if ($type == 'best') {
+                $query = "SELECT `idMovie`,
+                `idcategory`,
+                `name`,
+                `description`,
+                `mainview`,
+                `dateout`,
+                `VideoBO`,
+                `Realisateur`,
+                `Producteur`,
+                `movieActive` FROM `movie` where movieActive = 1 order by note desc, idMovie desc limit 4";
+            } else {
+                $query = "SELECT `idMovie`,
             `idcategory`,
             `name`,
             `description`,
@@ -120,7 +143,7 @@ class Movie implements JsonSerializable
             `Realisateur`,
             `Producteur`,
             `movieActive` FROM `movie` where movieActive = 1 order by idMovie desc limit 4";
-
+            }
             $result = $this->mydb->fetchAll($query);
             if ($result && count($result) > 0) {
                 return $result;

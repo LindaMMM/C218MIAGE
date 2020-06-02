@@ -74,7 +74,7 @@ $(document).ready(function (e) {
         $.ajax({
             dataType: "JSON",
             type: "POST",
-            url: "./src/ajax/lstUserAjax.php",
+            url: "../src/ajax/lstUserAjax.php",
             data: {
                 type:'listRole',
             },
@@ -194,7 +194,7 @@ $(document).ready(function (e) {
         $.ajax({
             dataType: "JSON",
             type: "POST",
-            url: "./src/ajax/lstUserAjax.php",
+            url: "../src/ajax/lstUserAjax.php",
             data: {
                 type:'add',
                 user: JSON.stringify(user)
@@ -230,7 +230,7 @@ $(document).ready(function (e) {
             $.ajax({
                 dataType: "JSON",
                 type: "POST",
-                url: "./src/ajax/lstUserAjax.php",
+                url: "../src/ajax/lstUserAjax.php",
                 data: {
                     type: 'get',
                     id: id

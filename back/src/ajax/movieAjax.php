@@ -89,6 +89,35 @@ try {
         //return;
     }
 
+    if ($type == 'child4') {
+
+        $liste = MovieService::GetChild4();
+        if ($liste != false) {
+            $respond->code = 1;
+            $respond->message = "Le trop 4 trouvé";
+            $respond->value = $liste;
+        } else {
+            $respond->code = -1;
+            $respond->message = "Le serveur ne trouve pas le top 4";
+        }
+        //echo json_encode($respond);
+        //return;
+    }
+
+    if ($type == 'best4') {
+
+        $liste = MovieService::GetBest4();
+        if ($liste != false) {
+            $respond->code = 1;
+            $respond->message = "Le trop 4 trouvé";
+            $respond->value = $liste;
+        } else {
+            $respond->code = -1;
+            $respond->message = "Le serveur ne trouve pas le top 4";
+        }
+        //echo json_encode($respond);
+        //return;
+    }
     if ($type == 'listForfait') {
 
         $liste = MovieService::GetAllForfait();
@@ -158,10 +187,10 @@ try {
             if (!isset($_POST["id"])) {
                 return;
             }
-            $id = $_POST["id"];
+            $idget = $_POST["id"];
             $respond->code = 1;
             $respond->message = "OK";
-            $respond->value = MovieService::GetMovieById($id);
+            $respond->value = MovieService::GetMovieById($idget,null);
         } catch (Exception $ex) {
             $respond->code = -1;
             $respond->message = $ex->message;
