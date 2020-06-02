@@ -9,8 +9,8 @@ header("Pragma:no-cache");
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="favicon.png" />
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="favicon.ico">
 
   <link rel="stylesheet" href="./src/public/css/night.css">
   <link rel="stylesheet" href="./src/public/css/main.css">

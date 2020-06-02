@@ -53,7 +53,7 @@ try {
                     $respond->message = "Ce compte n'est pas valide.";
                 }
             } 
-            else if (strcmp($view, 'back') !== 0) {
+            else if (strcmp($view, 'back') == 0) {
                 
                 if (searchRole($_SESSION["user_roles"], "ADM")) { 
                     $_SESSION['isadmin'] = true;
@@ -63,7 +63,7 @@ try {
                     $_SESSION['ismanager'] = true;
                 }
 
-                if (!$_SESSION['ismanager'] && !$_SESSION['ismanager']) {
+                if (!$_SESSION['ismanager'] && !$_SESSION['isadmin']) {
                     unset($_SESSION["iduser"]);
                     unset($_SESSION["user_roles"]);
         

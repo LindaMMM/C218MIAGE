@@ -11,7 +11,7 @@ $(document).ready(function (e) {
         // Empêcher le rechargement de la page.
         event.preventDefault(); 
         $.ajax({dataType: "JSON",
-            type: "POST", url: "../src/ajax/loginAjax.php", data: {'email': login, 'pwd': pwd},
+            type: "POST", url: "./src/ajax/loginAjax.php", data: {'email': login, 'pwd': pwd, 'view':'back' },
             success: function (response) {
                 code = response.code;
                 msg = response.message;

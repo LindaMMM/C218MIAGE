@@ -192,5 +192,5 @@
 </div>
 
 <?php $content = ob_get_clean(); ?>
-<?php $js = '<script src="../src/public/script/movie.js"></script>' ?>
-<?php require('../src/templates/tmpBack.php'); ?>
+<?php $js = '<script src="./src/public/script/movie.js"></script>' ?>
+<?php require('./src/templates/tmpBack.php'); ?>
