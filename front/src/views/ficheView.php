@@ -3,10 +3,9 @@
 
 <?php  $id = $_SESSION['idmovie_selected'];
 $movie = MovieService::GetMovieById($id,null);?>
-<div class="box">
-    <div id="err"></div>
-</div>
+
 <div class="container">
+    <div id="err"></div>
     <div class="title is-parent  ">
         <div class="title is-child box">
             <?php echo ($movie->getName()); ?>
@@ -30,10 +29,30 @@ $movie = MovieService::GetMovieById($id,null);?>
                         <?php echo ($movie->getDescription()); ?>
                     </p>
                     <p>
-                    <a id='btnAddPanier'>
-                        <i class="fas fa-shopping-cart"></i> <strong>Ajouter au panier</strong>
-                    </a>
+                    <?php if (isset($_SESSION['client'])){
+                        echo "<a id='btnAddPanier'>
+                        <i class='fas fa-shopping-cart'></i> <strong>Ajouter au panier</strong>
+                        </a>";
+                    }?>
+                    
                     </p>
+                    <nav class="level is-mobile">
+      <div class="level-left">
+        <?php 
+        $nbEtoile = intVal($movie->getNote());
+        for($i=1 ; $i<=$nbEtoile; $i++)
+        {
+            echo (" <a class='level-item'>
+                <span class='icon is-small'><i class='fas fa-star'></i></span>
+            </a>
+         ");     
+        }
+        
+        ?>
+       
+      
+      </div>
+    </nav>
                 </div>
             </div>
         </article>
@@ -52,7 +71,7 @@ $movie = MovieService::GetMovieById($id,null);?>
 </div>
 
 <?php $content = ob_get_clean(); ?>
-<?php $js = '<script src="./src/public/script/front/ficheMovie.js"></script>'; ?>
+<?php $js = '<script src="./src/public/script/front/fichemovie.js"></script>'; ?>
 <?php $client = $_SESSION["client"];
     if(isset($client))
         require('./src/templates/tmpFrontConnect.php');

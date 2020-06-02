@@ -1,6 +1,18 @@
 <?php
+
 function accueil() {
-    require('./src/views/mainFront.php');
+    $_SESSION['page']='accueil'; 
+    require('./src/views/mainfront.php');
+}
+
+function child() {
+    $_SESSION['page']='child'; 
+    require('./src/views/mainfront.php');
+}
+
+function best() {
+    $_SESSION['page']='best'; 
+    require('./src/views/mainfront.php');
 }
 
 function login() {

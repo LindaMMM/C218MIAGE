@@ -9,7 +9,7 @@
     private $mydb = null;
     protected $id = 0; 
     protected $name;
-    protected $nbfile = 0;
+    protected $nbfilm = 0;
     protected $price = 0.0;
     protected $actif = true;
 	protected $valid =false;
@@ -36,7 +36,7 @@
         'id' => $this->id,
         'name' => $this->name,
          'price' => $this->price,
-         'nbfilm' => $this->nbfile
+         'nbfilm' => $this->nbfilm
       );
       return $arrayVar;
   }
@@ -54,7 +54,7 @@
         {
             $this->id=($result[0]->idForfait);
             $this->name=($result[0]->name);
-            $this->nbfile=($result[0]->nbfile);
+            $this->nbfilm=($result[0]->nbfile);
             $this->price=($result[0]->Price);
             $this->actif=($result[0]->active);
             $this->valid = true;

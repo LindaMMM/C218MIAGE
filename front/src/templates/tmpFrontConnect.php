@@ -40,7 +40,7 @@ header("Pragma:no-cache");
               Les meilleurs
             </a>
             <a class="navbar-item" href="./index.php?page=child">
-              Pour les enfants
+              Tout public
             </a>
             <a class="navbar-item" href="./index.php?page=search">
               Tous les dvds

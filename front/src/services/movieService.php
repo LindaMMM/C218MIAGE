@@ -17,7 +17,8 @@ use Prophecy\Call\Call;
     public static function GetCategorie($bdd, $id)
     {
         $category = new Category($bdd);
-        return $category->getbyId($id);
+        $category->getbyId($id);
+        return $category;
     }
 
     public static function GetGenre($bdd, $idMovie)
@@ -59,7 +60,19 @@ use Prophecy\Call\Call;
     public static function GetTop4(){
         $bd= new Database(DB_DVD);
         $movie= new Movie($bd);
-        return $movie->getTop4();
+        return $movie->getTop4('top');
+    }
+
+    public static function GetChild4(){
+        $bd= new Database(DB_DVD);
+        $movie= new Movie($bd);
+        return $movie->getTop4('child');
+    }
+
+    public static function GetBest4(){
+        $bd= new Database(DB_DVD);
+        $movie= new Movie($bd);
+        return $movie->getTop4('best');
     }
 
     public static function GetAllForfait(){

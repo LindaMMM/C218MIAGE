@@ -25,7 +25,7 @@ class ConfigAutoLoader {
 		'Movie' => 'src/class/movie.php',
 		'MovieStock' => 'src/class/moviestock.php',
 		'RoleApp' => 'src/class/roleApp.php',
-		'UserApp' => 'src/class/UserApp.php',
+		'UserApp' => 'src/class/userApp.php',
 		'AbonneService' => 'src/services/abonneService.php',
 		'MovieService' => 'src/services/movieService.php',
 		'UserService' => 'src/services/userService.php',

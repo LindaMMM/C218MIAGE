@@ -131,9 +131,9 @@ class Location implements JsonSerializable
                 $forfait->getbyId($Client->idforfait);
             
                 // lecture de nombre de film en cours de location
-                $count = $this->countLocationByIdClient($Client->id);
+                $count = intval($this->countLocationByIdClient($Client->id));
 
-                $countlocationPossible =  $forfait->getNbfilm() - $count ;
+                $countlocationPossible =  intval($forfait->getNbfilm()) - $count ;
 
                 return count($_SESSION['panier'])< $countlocationPossible;
             }

@@ -6,6 +6,7 @@
     <div class="section has-text-centered  has-background-grey-lighter">
         <p class="title is-1">Espace client</p>
         
+        Page en cours de construction.... 
 
     </div>
 </div>

@@ -3,6 +3,18 @@
 echo "<script> 
 var affiche= '".MEDIA_AFFICHE.
 "';</script>";
+$page = "Nouveauté";
+$js = '<script src="./src/public/script/front/main.js"></script>' ;
+if (isset ($_SESSION['page'])){
+    if (strcmp($_SESSION['page'],'child')==0){
+        $page = "Les meilleurs DVDs pour toute la famille";
+        $js = '<script src="./src/public/script/front/child.js"></script>' ;
+    }
+    else if (strcmp($_SESSION['page'],'best')==0){
+        $page = "Les meilleurs";
+        $js = '<script src="./src/public/script/front/best.js"></script>' ;
+    }
+}
 ?>
 
 <div id="page" class="box">
@@ -10,7 +22,11 @@ var affiche= '".MEDIA_AFFICHE.
     <div class="is-center">
         <div class="title is-parent  ">
             <div class="title is-child box">
-                Nouveauté
+            <?php 
+              
+                echo($page);
+            ?>
+               
                 <div class="subtitle ">
                     Dernier dvd
                 </div>
@@ -25,8 +41,7 @@ var affiche= '".MEDIA_AFFICHE.
 <?php $content = ob_get_clean(); ?>
 
 <?php
-$js = '<script src="./src/public/script/front/main.js"></script>' .
-    '<script type="text/template" class="TemplateMovie">
+$js .= '<script type="text/template" class="TemplateMovie">
     <div class="column  ">
     <div class="card">
     <div class="card-image">
