@@ -8,11 +8,11 @@
 class Location implements JsonSerializable
 {
     private $mydb = null;
-    protected $idclient, $id = 0 ;
+    protected $idclient, $id = 0;
     protected $datelocation;
     protected $film = array();
     protected $valid = false;
-    
+
     public function __construct($dbb)
     {
         $this->datelocation = date("Y-m-d");
@@ -116,39 +116,39 @@ class Location implements JsonSerializable
     public function getAllbyIdClient($idClient)
     {
         $query = "SELECT `idlocation`, `dateLocation`, `Client_idClient` FROM `location` where `Client_idClient` = ?";
-        $result = $this->mydb->fetchAll($query,$idClient);
+        $result = $this->mydb->fetchAll($query, $idClient);
         if ($result && count($result) > 0) {
             return $result;
         }
         return null;
     }
 
-    public function checkClient($Client){
-        try{
-            if ($Client->idforfait != null)
-            {
+    public function checkClient($Client)
+    {
+        try {
+            if ($Client->idforfait != null) {
                 $forfait = new Forfait($this->mydb);
                 $forfait->getbyId($Client->idforfait);
-            
+
                 // lecture de nombre de film en cours de location
                 $count = intval($this->countLocationByIdClient($Client->id));
 
-                $countlocationPossible =  intval($forfait->getNbfilm()) - $count ;
+                $countlocationPossible =  intval($forfait->getNbfilm()) - $count;
 
-                return count($_SESSION['panier'])< $countlocationPossible;
+                return count($_SESSION['panier']) < $countlocationPossible;
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
         }
         return false;
     }
-    public function countLocationByIdClient($idClient){
+    public function countLocationByIdClient($idClient)
+    {
         $query = "SELECT count(*) as count  from location l 
         inner join stockmovie_has_location s on l.idlocation = s.location_idlocation
         where l.Client_idClient = ? and s.datecomeback is null";
 
-        $result = $this->mydb->fetchAll($query,$idClient);
-    
+        $result = $this->mydb->fetchAll($query, $idClient);
+
         if ($result && count($result) > 0) {
             return $result[0]->count;
         }
@@ -158,38 +158,37 @@ class Location implements JsonSerializable
     public function add($Client)
     {
         $queryInsert = " INSERT INTO `location` ( `dateLocation`, `Client_idClient`) VALUES (now(), ?)";
-        if ($this->mydb->execReturnBool($queryInsert, $Client->id ) != false) {
-            $this->id= $this->mydb->lastInsertId();
-            $this->addFilms($Client->id);
-            return true;
+        if ($this->mydb->execReturnBool($queryInsert, $Client->id) != false) {
+            $this->id = $this->mydb->lastInsertId();
+
+            return $this->addFilms($Client->id);
         }
         return false;
     }
 
     public function addFilms($idClient)
-    {    
+    {
+        if (is_array($_SESSION['panier']) && count($_SESSION['panier']) > 0) {
+            $queryInsert = " INSERT INTO `stockmovie_has_location`  (`stockMovie_idstockMovie`, `location_idlocation`) VALUES (?, ?)";
+            foreach ($_SESSION['panier'] as $value) {
+                //commandes
+                if (isset($value)) {
 
-        $queryInsert = " INSERT INTO `stockmovie_has_location`  (`stockMovie_idstockMovie`, `location_idlocation`) VALUES (?, ?)";   
-        foreach ($_SESSION['panier'] as $value) {
-            //commandes
-            if (isset($value)) {
-
-                // get stock
-                $stock = MovieService::GetMovieStockById($value, $this->mydb);
-                if ($stock->consomme() && $stock->update($stock))
-                {
-                    if ($this->mydb->execReturnBool($queryInsert,  $stock->getId(), $this->id ) == false) {   
+                    // get stock
+                    $stock = MovieService::GetMovieStockById($value, $this->mydb);
+                    if ($stock->consomme() && $stock->update($stock)) {
+                        if ($this->mydb->execReturnBool($queryInsert,  $stock->getId(), $this->id) == false) {
+                            return false;
+                        }
+                    } else {
                         return false;
                     }
                 }
-                else{
-                    return false;
-                }
             }
+        }
+        else{
+            return false;
         }
         return true;
     }
-
-
-    
 }

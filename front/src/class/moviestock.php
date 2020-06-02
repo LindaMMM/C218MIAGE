@@ -83,7 +83,7 @@
     }
 
     public function consomme(){
-        if($this->nbstock>1)
+        if($this->nbstock > 1)
         {
          $this->nbwait++;
          $this->nbstock--;
