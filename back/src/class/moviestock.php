@@ -72,10 +72,10 @@
           return;
     }
 
-    public function add($value){
+    public function add( $idMovie, $value){
         
         $queryInsert = " INSERT INTO `stockmovie` (`idMovie`, `refProduit`, `nbStock`, `nbwaitSend`, `nbSend`)  VALUES ( ?, ?, ?, 0, 0)";
-        if ($this->mydb->execReturnBool($queryInsert, $value->idMovie, $value->refProduit, $value->nbStock ) != false) {
+        if ($this->mydb->execReturnBool($queryInsert, $idMovie, $value->stockRef, $value->nbstock ) != false) {
             $this->id= $this->mydb->lastInsertId();
             return true;
         }
@@ -113,7 +113,7 @@
     
     public function update($value){
         $queryInsert = " UPDATE `stockmovie`  SET `nbStock` = ?, `nbwaitSend` = ?,   `nbSend` = ?  WHERE `idstockMovie` = ?";
-        if ($this->mydb->execReturnBool($queryInsert, $value->nbstock,  $value->nbwait, $value->nbsend, $value->id ) != false) {
+        if ($this->mydb->execReturnBool($queryInsert, $value->nbstock,  $value->nbwait, $value->nbsend, $value->idstock ) != false) {
             return true;
         }
         return false;

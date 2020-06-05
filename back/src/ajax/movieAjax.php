@@ -65,12 +65,12 @@ try {
 
         $rows = array();
         foreach ($result as $value) {
-            $value->DT_RowId = $value->idmovie;
+            $value->DT_RowId = $value->idMovie;
             $output['aaData'][] = $value;
         }
 
         //$output['aaData'] = $result;
-        echo json_encode($output);
+        echo json_encode($output,JSON_INVALID_UTF8_IGNORE);
         return;
     }
 
@@ -118,6 +118,7 @@ try {
         //echo json_encode($respond);
         //return;
     }
+
     if ($type == 'listForfait') {
 
         $liste = MovieService::GetAllForfait();
@@ -147,7 +148,6 @@ try {
         //echo json_encode($respond);
         //return;
     }
-
 
     if ($type == 'listGenre') {
 
@@ -190,13 +190,41 @@ try {
             $idget = $_POST["id"];
             $respond->code = 1;
             $respond->message = "OK";
-            $respond->value = MovieService::GetMovieById($idget,null);
+            $movie = MovieService::GetMovieById($idget,null);
+            
+            $respond->value = $movie;
         } catch (Exception $ex) {
             $respond->code = -1;
             $respond->message = $ex->message;
             $respond->value = null;
         }
     }
+
+    if ($type == 'save') {
+        try {
+            if (!isset($_POST["movie"])) {
+                return;
+            }
+            $movie = json_decode($_POST["movie"]);
+            if (MovieService::SaveMovie($movie))
+            {
+                $respond->code = 1;
+                $respond->message = "OK";
+            }
+            else
+            {
+                $respond->code = -1;
+                $respond->message = "La sauvegarde est impossible";
+            }
+            
+            
+        } catch (Exception $ex) {
+            $respond->code = -1;
+            $respond->message = $ex->message;
+            $respond->value = null;
+        }
+    }
+
 } catch (Exception $e) {
     $respond->code = -5;
     $respond->message = "Le site a rencontré un problème";

@@ -17,7 +17,8 @@ header("Pragma:no-cache");
   <link rel="stylesheet" href="./src/public/css/mystyles.css">
 
   <link rel="stylesheet" href="./src/public/script/datatables/1.10.16/jquery.dataTables.min.css" />
-  <link rel="stylesheet" href="./src/public/bulma-0.8.0/dataTables.bulma.min.css"/>
+  <link rel="stylesheet" href="./src/public/bulma-0.8.0/dataTables.bulma.min.css" />
+  <link rel="stylesheet" href="./src/public/bulma-0.8.0/bulma-calendar/css/bulma-calendar.min.css">
 
   <meta name="theme-color" content="#fafafa">
 </head>
@@ -42,29 +43,34 @@ header("Pragma:no-cache");
 
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-start">
-            <a class="navbar-item" href="./index.php?page=users" >
+            <a class="navbar-item" href="./index.php?page=users">
               Utilisateur
             </a>
 
             <a class="navbar-item" href="./index.php?page=movies">
               Films
             </a>
-            
+
 
             <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link"  >
+              <a class="navbar-link">
                 Gestion clients
               </a>
 
               <div class="navbar-dropdown">
-                <a class="navbar-item" href="./index.php?page=prepa">
-                  Préparation envoi 
+                <a class="navbar-item" href="./index.php?page=cltfiche">
+                  Fiche Client
                 </a>
-                <a class="navbar-item" href="./index.php?page=update">
-                  Validation client
+                <a class="navbar-divider">
                 </a>
-                <hr class="navbar-divider" href="./index.php?page=relance">
-                <a class="navbar-item">
+                <a class="navbar-item" href="./index.php?page=cltprepa">
+                  Préparation envoi
+                </a>
+                <a class="navbar-item" href="./index.php?page=cltreception">
+                  Réception Dvd
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item" href="./index.php?page=cltrelance">
                   Relance client
                 </a>
               </div>
@@ -73,7 +79,7 @@ header("Pragma:no-cache");
 
           <div class="navbar-end">
             <div class="navbar-item">
-              <div  class="buttons">
+              <div class="buttons">
                 <a id="btnDeconnect" class="button is-primary">
                   <strong>Déconnecter</strong>
                 </a>
@@ -102,7 +108,9 @@ header("Pragma:no-cache");
   <script src="./src/public/script/plugins.js"></script>
   <script src="./src/public/script/datatables/1.10.16/jquery.dataTables.min.js"></script>
   <script src="./src/public/bulma-0.8.0/dataTables.bulma.min.js"></script>
+  <script src="./src/public/bulma-0.8.0/bulma-calendar/js/bulma-calendar.min.js"></script>
   <script src="./src/public/script/lodash.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
   <?= $js ?>
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
   <script>
@@ -140,6 +148,7 @@ header("Pragma:no-cache");
         });
 
       }
+      
     });
 
     $(document).ready(function() {

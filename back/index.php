@@ -16,14 +16,15 @@ if (isset($_GET['page'])) {
         case "movies":
             listmovie();
         break;
-        case "prepa":
+        case "cltprepa":
+        case "cltprepa":
             prepaClient();
         break;
         case "update":
             updateClient();
         break;
         case "relance":
-            RelanceClient();
+            relanceClient();
         break;
         default:
             accueil();

@@ -15,6 +15,7 @@ class Movie implements JsonSerializable
     protected $dateOut = '';
     protected $actif = false;
     protected $categorie = null;
+    protected $stock = null;
     protected $genres = [];
     protected $valid = false;
 
@@ -40,7 +41,7 @@ class Movie implements JsonSerializable
             'id' => $this->id,
             'title' => $this->name,
             'desc' => $this->description,
-            'dtOut' => $this->dateOut,
+            'dtOut' => $this->dateOut->format('Y-m-d'),
             'view' => $this->affiche,
             'video' => $this->video,
             'classif' => $this->categorie,
@@ -48,7 +49,8 @@ class Movie implements JsonSerializable
             'actif' => $this->actif,
             'producteur' => $this->producteur,
             'realisateur' => $this->realisateur,
-            'note' => $this->note
+            'note' => $this->note,
+            'stock'=> $this->stock
         );
         return $arrayVar;
     }
@@ -181,8 +183,10 @@ class Movie implements JsonSerializable
                 $this->producteur = ($result[0]->Producteur);
                 $this->actif = ($result[0]->movieActive);
                 $this->note = ($result[0]->note);
+                $this->dateOut = new DateTime($result[0]->dateout);
                 $this->categorie = MovieService::GetCategorie($this->mydb, $result[0]->idcategory);
                 $this->genres = MovieService::GetGenre($this->mydb, $result[0]->idMovie);
+                $this->stock = MovieService::GetMovieStockById($result[0]->idMovie, $this->mydb, );
                 $this->valid = true;
             }
         } catch (Exception $e) {
@@ -231,14 +235,54 @@ and g.genre_idgenre in (1)*/
         }
     }
 
+    public function addGenre($value)
+    {
+        $genre_array = explode(', ', $value->genre );
+        if (is_array($genre_array) && count($genre_array) > 0) {
+            $queryInsertgenre = " INSERT INTO `movie_has_genre` (`Movie_idMovie`,`genre_idgenre`) VALUES (?, ?)";
+            foreach ($genre_array as $gen) {
+                
+                if (isset($gen)&& $gen!="") {
+                    if ($this->mydb->execReturnBool($queryInsertgenre, $this->id, $gen) == false) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+        return false;
+    }
+
+    public function clearGenre()
+    {
+        $querydelete = "DELETE FROM `movie_has_genre` where Movie_idMovie = ? ";
+        return ($this->mydb->execReturnBool($querydelete, $this->id) != false) ;
+    }
+    
+
     public function add($value)
     {
-        //** TODO add genre */
+        $queryInsert = " INSERT INTO `movie` ( `idcategory`, `name`,  `description`,  `mainview`, `dateout`,  `VideoBO`,  `Realisateur`,  `Producteur`,  `movieActive`, `note`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)";
+        if ($this->mydb->execReturnBool($queryInsert, $value->idcategory, $value->title, $value->desc, $value->affiche, $value->dateout, $value->video, $value->realisateur, $value->producteur, $value->note ) != false) {
+            $this->id= $this->mydb->lastInsertId();
+
+            return $this->addGenre($value);
+        }
+        return false;
 
     }
 
     public function update($value)
     {
-        //** TODO add genre */
+        $queryUpdate = " update `movie` set `idcategory` = ?, `name` = ?,  `description` = ?,  `mainview` = ?, `dateout` = ?,  `VideoBO` = ?,  `Realisateur` = ?,  `Producteur` = ? , `note` = ? where idMovie= ?";
+        if ($this->mydb->execReturnBool($queryUpdate, $value->idcategory, $value->title, $value->desc, $value->affiche, $value->dateout, $value->video, $value->realisateur, $value->producteur, $value->note , $value->id ) != false) {
+            $this->id= $value->id;
+            if ($this->clearGenre())
+                return $this->addGenre($value);
+        }
+        return false;
     }
 }

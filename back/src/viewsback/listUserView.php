@@ -31,7 +31,7 @@
                                 </span>
                             </a>
                         </p>
-                        <p class="control">
+                        <p class="control" style='display:none'>
                             <a class="button is-danger" id="deleteUser" href="#">
                                 <span class="icon">
                                     <i class="fas fa-trash fa-2x"></i>

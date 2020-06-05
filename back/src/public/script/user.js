@@ -1,5 +1,6 @@
 $(document).ready(function (e) {
     console.log("user.js");
+    // Liste des éléments selectionnés dans la liste
     var selected = [];
     var roles = [];
     var tableConnexion = $('#tabUser').dataTable({

@@ -2,6 +2,7 @@
 <?php ob_start(); ?>
 
 <div id="page" class="box">
+    <div id="err"></div>
     <p class="title is-1">Liste des films</p>
     <p class="subtitle is-3">Gestion des films</p>
     <nav>
@@ -27,7 +28,7 @@
                         </span>
                     </a>
                 </p>
-                <p class="control">
+                <p class="control" style='display:none'>
                     <a class="button is-danger" id="deleteMovie" href="#">
                         <span class="icon">
                             <i class="fas fa-trash fa-2x"></i>
@@ -46,14 +47,15 @@
         </table>
     </div>
 </div>
-<div id="popup_delete" style="display: none"></div>
-<div id="popup_create">
+
+<div id="popup_create" class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
         <header class="modal-card-head">
-            <p class="modal-card-title">Modal title</p>
+            <p class="modal-card-title">Fiche Film</p>
             <button class="delete" aria-label="close"></button>
         </header>
+
         <section class="modal-card-body">
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
@@ -64,13 +66,14 @@
                         <p class="control is-expanded has-icons-left">
                             <input class="input" type="text" placeholder="Titre" id="title_movie">
                             <span class="icon is-small is-left">
-                                <i class="fas fa-movie"></i>
+                                <i class="fas fas-movie"></i>
                             </span>
                         </p>
                     </div>
 
                 </div>
             </div>
+
 
             <div class="field is-horizontal">
                 <div class="field-label"></div>
@@ -82,59 +85,50 @@
                     </div>
                 </div>
             </div>
-
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label">Affiche</label>
+                    <label class="label">Media</label>
                 </div>
                 <div class="field-body">
                     <div class="field">
-                        <div class="file control">
-                            <label class="file-label">
-                                <input class="file-input" type="file" name="resume">
-                                <span class="file-cta">
-                                    <span class="file-icon">
-                                        <i class="fas fa-upload"></i>
-                                    </span>
-                                    <span class="file-label">
-                                        Right file…
-                                    </span>
-                                </span>
-                                <span class="file-name">
-                                    Screen Shot 2017-07-29 at 15.54.25.png
-                                </span>
-                            </label>
-                        </div>
-
-
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="text" placeholder="nom du fichier de l'affiche" id="name_affiche">
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="text" placeholder="nom du fichier de la vidéo" id="name_video">
+                        </p>
                     </div>
                 </div>
             </div>
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label">Bande annonce</label>
+                    <label class="label">Date de sortie</label>
                 </div>
                 <div class="field-body">
                     <div class="field">
-                        <div class="file control" id="btnUploadFile">
-                            <label class="file-label">
-                                <input class="file-input" type="file" name="resume" id="fileBO">
-                                <span class="file-cta">
-                                    <span class="file-icon">
-                                        <i class="fas fa-upload"></i>
-                                    </span>
-                                    <span class="file-label" id="labelFileBo">
-                                        Right file…
-                                    </span>
-                                </span>
-                                <span class="file-name">
-                                    Screen Shot 2017-07-29 at 15.54.25.png
-                                </span>
-                            </label>
-                        </div>
-
-
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="date" placeholder="date de sortie" id="dateout">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"></label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="text" placeholder="Réalisateur" id="realisateur">
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="text" placeholder="Producteur" id="producteur">
+                        </p>
                     </div>
                 </div>
             </div>
@@ -147,7 +141,7 @@
                     <div class="field is-narrow">
                         <div class="control">
                             <div class="select is-fullwidth">
-                                <select>
+                                <select id="panelCategorie">
                                     <option>Tout public</option>
                                     <option>Interdiction -10</option>
                                     <option>+12</option>
@@ -163,8 +157,7 @@
                     <label class="label">Genre</label>
                 </div>
                 <div class="field-body">
-
-                    <div class="field panel ">
+                    <div class="field panel" id="block_genre">
                         <div class="control">
                             <label class="checkbox">
                                 <input type="checkbox">
@@ -180,17 +173,105 @@
                     </div>
                 </div>
             </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Note</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="text" placeholder="Note" id="note_movie">
+                            <span class="icon is-small is-left">
+                                <i class="fas fas-star"></i>
+                            </span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Stock</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="text" placeholder="Réf. du stock" id="stockRef">
+                            <span class="icon is-small is-left">
+                                <i class="fas fas-movie"></i>
+                            </span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"></label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="text" placeholder="Nombre de DVD en stock" id="stockNb">
+                            <span class="icon is-small is-left">
+                                <i class="fas fas-movie"></i>
+                            </span>
+                        </p>
+                    </div>
+
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="text" placeholder="Nombre de DVD en stock" id="stockNbwait">
+                            <span class="icon is-small is-left">
+                                <i class="fas fas-movie"></i>
+                            </span>
+                        </p>
+                    </div>
+
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                            <input class="input" type="text" placeholder="Nombre de DVD en stock" id="stockNbSend">
+                            <span class="icon is-small is-left">
+                                <i class="fas fas-movie"></i>
+                            </span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success" id="btnSavePopup">Enregistrer</button>
+                <button class="button" id="btnCancelPopup">Annuler</button>
+            </footer>
     </div>
-    </section>
-    <footer class="modal-card-foot">
-        <button class="button is-success" id="btnSavePopup">Enregistrer</button>
-        <button class="button" id="btnCancelPopup">Annuler</button>
-    </footer>
-</div>
+
 
 
 </div>
+
 
 <?php $content = ob_get_clean(); ?>
-<?php $js = '<script src="./src/public/script/movie.js"></script>' ?>
+<?php $js = '<script src="./src/public/script/movie.js"></script>' .
+    " <script type='text/template' class='TemplateCategorie'>
+
+<option value={{id}}>{{name}} </option>
+    
+</script>" .
+    "<script type='text/template' class='TemplateGenre'>
+            <div class='control'>
+                <label class='checkbox'>
+                    <input type='checkbox' id_genre={{id}}>
+                    {{name}}
+                </label>
+            </div>
+</script>";
+
+?>
 <?php require('./src/templates/tmpBack.php'); ?>

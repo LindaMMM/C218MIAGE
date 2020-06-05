@@ -97,4 +97,40 @@ use Prophecy\Call\Call;
         $movie= new Movie($bd);
         return $movie->getAllSearch($filter);
     }
+
+    public static function SaveMovie($movieSend){
+        $bd= new Database(DB_DVD);
+        $movie= new Movie($bd);
+        if ($bd->beginTransaction())
+        {
+            if (isset($movieSend->id)&& $movieSend->id!=("0"))
+            {
+                if ($movie->update($movieSend))
+                {
+                    $movieStock = new MovieStock($bd);
+                    $movieStock->getbyIdMovie($movie->getId());
+                    $movieSend->idstock = $movieStock->getId();
+                    if ($movieStock->update($movieSend))
+                    {
+                        if ($bd->commit())
+                        return true;
+                    }
+                }
+            }
+            else 
+            {
+                if ($movie->add($movieSend))
+                {
+                    $movieStock = new MovieStock($bd);
+                    if ($movieStock->add($movie->getId(),$movieSend))
+                    {
+                        if ($bd->commit())
+                        return true;
+                    }
+                }
+            }
+            $bd->rollBack();    
+        }
+        return  false;
+    }
 }
