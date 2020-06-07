@@ -3,15 +3,17 @@ $(document).ready(function (e) {
     // Liste des éléments selectionnés dans la liste
     var selected = [];
     var roles = [];
+    $eltUpdate = -1;
     var tableConnexion = $('#tabUser').dataTable({
-        "dom": '<"field is-horizontal"l> <"field is-horizontal"f>rt<"bottom"p><"clear">',
+        "dom": '<"field is-horizontal"> <"field is-horizontal"f>rt<"bottom"p><"clear">',
         "ajax": {
             "type": "POST",
             "url": "./src/ajax/lstUserAjax.php",
             "dataSrc": "aaData",
             "data": function (d) {
                 return $.extend({}, d, {
-                    "type": 'list'
+                    "type": 'list',
+                    "role": 'back'
                 });
             }
         },
@@ -24,15 +26,15 @@ $(document).ready(function (e) {
         "language": {
             "lengthMenu": "Affichage _MENU_ par page",
             "zeroRecords": "Pas d'enregistrement",
-            "search" : "Rechercher",
+            "search": "Rechercher",
             "info": " _PAGE_ / _PAGES_",
             "infoEmpty": "Aucune enregistrement",
             "infoFiltered": "(filtered from _MAX_ total records)",
             paginate: {
-                first:      "Premier",
-                previous:   "Pr&eacute;c&eacute;dent",
-                next:       "Suivant",
-                last:       "Dernier"
+                first: "Premier",
+                previous: "Pr&eacute;c&eacute;dent",
+                next: "Suivant",
+                last: "Dernier"
             },
         },
         "columnDefs": [
@@ -55,7 +57,18 @@ $(document).ready(function (e) {
         }
     });
 
+    // suppression des lignes sélectionées sur la table
+    function clearSelected() {
+        // supression dans la sélection
+        $('.is-selected').each(function () {
+            $(this).removeClass("is-selected");
+        });
+        selected = [];
+    }
 
+    //
+    // Selection dans la liste
+    // 
     $('#tabUser tbody').on('click', 'tr', function () {
         // Ajout dans la sélection
         var id = this.id;
@@ -71,122 +84,105 @@ $(document).ready(function (e) {
         $(this).toggleClass('is-selected');
     });
 
+    ///--------------------------------------
+    // Lecture de la liste de rôles
+    ///-------------------------------------
     function initListRole() {
         $.ajax({
             dataType: "JSON",
             type: "POST",
-            url: "../src/ajax/lstUserAjax.php",
+            url: "./src/ajax/lstUserAjax.php",
             data: {
-                type:'listRole',
+                type: 'listRole',
+                role: 'back',
             },
             success: function (reponse) {
-                roles = reponse;
-                afficheRole();
+                code = reponse.code;
+                msg = reponse.message; 
+                roles = JSON.parse(reponse.value);
+                
             },
             error: function (reponse) {
-                html = '<div class="notification is-danger">\n\
-                <button class="delete">\n\
-                </button>' + reponse + '\n\
-                </span>\n\
-                </div>';
-                    $('#err').html(html);
+                code = -1;
+                msg = "la liste des rôles est non trouvable.";
+            },
+            complete: function (){
+                if (code > 0) {
+                    afficheRole();
+                } else {
+                    displayMessageErr(msg);
+                }
             }
-            
+
         });
     }
 
-    function afficheRole(){
-        $('#rolesField').empty();
+    // affiche la liste des rôles
+    function afficheRole() {
+        $('#rolesField').empty().html('');
         _.forEach(roles, function (role) {
-            var txt1 = '<div class="control"> <label class="checkbox"> <input type="checkbox" id=cbx_'+role.codRole +' /> '+role.namRole+'</label> </div>'; 
+            var txt1 = '<div class="control"> <label class="checkbox"> <input type="checkbox" id=cbx_' + role.code + ' /> ' + role.name + '</label> </div>';
             $('#rolesField').append(txt1)
         });
-
-    }
-     function check_email(val){
-        if(!val.match(/\S+@\S+\.\S+/)){ 
-            return false;
-        }
-        if( val.indexOf(' ')!=-1 || val.indexOf('..')!=-1){
-            return false;
-        }
-        return true;
-    }
-    
-    function check_number(selector){
-        var value =selector.val();
-        selector.addClass("error_input");
-        if (_.isEmpty(value) )
-        {
-            return false;
-        }
-        if (!$.isNumeric(value) )
-        {
-            return false;
-        }
-        selector.removeClass("error_input");
-        return true;
     }
 
-    function check_chaine(selector){
-        var value =selector.val();
-        selector.addClass("error_input");
-        if (_.isEmpty(value) )
-        {
-            return false;
-        }
-        if (!_.isString(value) )
-        {
-            return false;
-        }
-        selector.removeClass("error_input");
-        return true;
-    }
-
-    function clearSelected() {
-        // supression dans la sélection
-        $('.selected').each(function () {
-            $(this).removeClass("is-selected");
-        });
-        selected = [];
-    }
-    function checkInput()
-    {
+    ///---------------------------------------------------
+    /// vérification de la liste des saisie
+    ///---------------------------------------------------
+    function checkInput() {
         var continu = true;
-        continu = check_chaine($("#txtfirstname"))&& continu;
-        continu = check_chaine($("#txtlastname"))&& continu;
-        continu = check_chaine($("#txtEmail"))&& continu;
-      
-        if(!check_email($("#txtEmail").val()))
-        {
-             $("#txtEmail").addClass("error_saisie");
-            continu =false;    
+        continu = check_chaine($("#txtfirstname")) && continu;
+        continu = check_chaine($("#txtlastname")) && continu;
+        continu = check_chaine($("#txtEmail")) && continu;
+        continu = check_chaine($("#txtPwd")) && continu;
+
+        if (!check_email($("#txtEmail").val())) {
+            $("#txtEmail").addClass("is-danger");
+            continu = false;
         }
-        
+
         return continu;
     }
-    function addUser(event, ui,id)
-    {
-        if (!checkInput())
-        {
-            displayMessage("erreur","erreur ",'warning');
-            return ;
+
+    /**** Annuler de la popup */
+    $('#btnCancel').on('click',function(){
+        $("#popup_create").removeClass("is-active");
+    });
+
+    function getroles() {
+        var role = '';
+        _.forEach($('#rolesField').find('input:checked'), function (itemrole) {
+            role += itemrole.getAttribute("val");
+            role += ", ";
+        });
+        return role;
+    }
+
+    /**** Ajout de la popup  */
+    $('#btnSave').on('click',function(){
+    
+    
+        if (!checkInput()) {
+            displayMessageErr("L'ajout n'est pas possible");
+            return;
         }
-        
+
         /*Recupération info saisie*/
-        var user={};
-        if (id === undefined)
-        {
-            id=0;
+        var user = {};
+        
+        if ($eltUpdate === -1) {
+            user.id = 0;
         }
+        else{
+            user.id = $eltUpdate ;
+        }
+
         
-        user.id = id;
-        user.firstname=$("#txtfirstname").val();
-        user.lastname=$("#txtlastname").val();
-        user.email=$("#txtEmail").val();
-   
-        
-        
+        user.firstname = $("#txtfirstname").val();
+        user.lastname = $("#txtlastname").val();
+        user.email = $("#txtEmail").val();
+        user.pwd = $("#txtPwd").val();
+
         /*Transmission de la sauvegarde*/
         console.log("save");
         var code = 0;
@@ -195,34 +191,36 @@ $(document).ready(function (e) {
         $.ajax({
             dataType: "JSON",
             type: "POST",
-            url: "../src/ajax/lstUserAjax.php",
+            url: "./src/ajax/lstUserAjax.php",
             data: {
-                type:'add',
+                type: 'add',
                 user: JSON.stringify(user)
             },
             success: function (response) {
                 code = response.code;
                 msg = response.message;
-               
+
             },
             error: function (response) {
                 code = response.code;
                 msg = response.message;
             },
             complete: function () {
-                if (code>0)
-                {
+                if (code > 0) {
                     /*Fermer la boite de dialogue*/
-                    $("#popup_create").dialog("close");
+                    $("#popup_create").removeClass("is-active");
                 }
-                 tableConnexion.fnDraw(true);
-                 displayMessage("infor",msg);
-                 $eltUpdate = -1;
+                tableConnexion.fnDraw(true);
+                displayMessageInfo(msg);
+                $eltUpdate = -1;
             }
 
         });
-    }
+    });
 
+    //-------------------------------------
+    // lecture de l'utilisateur
+    //--------------------------------------
     function getUser(id) {
         $('#rolesField').find('input[type="checkbox"]').removeAttr('checked');
         //Lecture 
@@ -231,7 +229,7 @@ $(document).ready(function (e) {
             $.ajax({
                 dataType: "JSON",
                 type: "POST",
-                url: "../src/ajax/lstUserAjax.php",
+                url: "./src/ajax/lstUserAjax.php",
                 data: {
                     type: 'get',
                     id: id
@@ -250,17 +248,13 @@ $(document).ready(function (e) {
                         $("#txtfirstname").val(user.firstName);
                         $("#txtlastName").val(user.lastName);
                         $("#txtEmail").val(user.email);
-                        _.forEach(user.roles,function(role){
-                            $('#cbx_'+role.codRole).attr('checked', 'checked')
+                        $("#txtPwd").val(user.pwd);
+                        _.forEach(user.roles, function (role) {
+                            $('#cbx_' + role.codRole).attr('checked', 'checked')
                         })
                     }
                     else {
-                        html = '<div class="notification is-danger">\n\
-                    <button class="delete">\n\
-                    </button>' + msg + '\n\
-                    </span>\n\
-                    </div>';
-                        $('#err').html(html);
+                        displayMessageErr(msg);
                     }
                 }
             });
@@ -270,41 +264,51 @@ $(document).ready(function (e) {
             $("#txtfirstname").val('');
             $("#txtlastName").val('');
             $("#txtEmail").val('');
+            $("#txtPwd").val('');
         }
     }
 
+    /********************************************************************************************* */
+    /*                          Evenements de la page                                               */
+    /********************************************************************************************* */
     $("#addUser").click(function () {
         $('#title_popup').html("Création d'un utilisateur");
         getUser(0);
         $("#popup_create").addClass("is-active");
     });
-    
+
     $("#updateUser").click(function () {
         if (selected.length == 0) {
-            html = '<div class="notification is-danger">\n\
-                    <button class="delete">\n\
-                    </button>' + 'Aucun utilisateur a été sélectionné.' + '\n\
-                    </span>\n\
-                    </div>';
-            $('#err').html(html);
-
+            displayMessageErr('Aucun utilisateur a été sélectionné.');
         }
         else {
             $('#title_popup').html("Mise à jour d'un utilisateur");
             $eltUpdate = selected[0];
             getUser($eltUpdate);
             $("#popup_create").addClass("is-active");
+            $(".modal-close").click(function () {
+                $(".modal").removeClass("is-active");
+            });
         }
-
     });
+
     $("#deleteUser").click(function () {
-        alert("dem for .click() called.");
+        if (selected.length == 0) {
+            displayMessageErr('Aucun utilisateur a été sélectionné.');
+        }
+        else {
+            $eltUpdate = selected[0];
+            getUser($eltUpdate);
+            $("#popup_delete").addClass("is-active");
+            $(".modal-close").click(function () {
+                $(".modal").removeClass("is-active");
+            });
+        }
     });
 
     // Mise à jour de l'affichage
     initListRole();
+    clearMessageErr();
 });
 
-$(".modal-close").click(function() {
-    $(".modal").removeClass("is-active");
- });
+

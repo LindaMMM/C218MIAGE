@@ -46,7 +46,20 @@
     
     public function getAll()
     {
-        $query="SELECT codRole, namRole FROM role_app";
+        $query="SELECT code, name FROM role_app";
+        $result = $this->mydb->fetchAll($query);
+
+        if ($result && count($result)> 0 )
+        {
+            return $result;
+        }
+        
+        return null;
+    }
+
+    public function GetAllBackOffice()
+    {
+        $query="SELECT code, name FROM role_app where code <> 'CLI'";
         $result = $this->mydb->fetchAll($query);
 
         if ($result && count($result)> 0 )

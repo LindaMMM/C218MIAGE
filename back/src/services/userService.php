@@ -51,10 +51,14 @@
         return $user;
     }
 
-    public static function GetAllRole()
+    public static function GetAllRole($typeRole)
     {
         $bd= new Database(DB_DVD);
         $role= new RoleApp($bd);
+        if(isset($typeRole)&& strcmp($typeRole,'back')==0)
+        {
+            return  $role->GetAllBackOffice();
+        }
         return  $role->GetAll();
     }
     
@@ -71,7 +75,13 @@
         $clt->getbyIdUser($id);
         return $clt;
     }
-
+    
+    /**
+     * CreateClient
+     *
+     * @param  mixed $client
+     * @return boolean 
+     */
     public static function CreateClient($client){
         $bd= new Database(DB_DVD);
         $clt= new Client($bd);

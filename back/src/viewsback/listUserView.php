@@ -52,6 +52,7 @@
 </div>
 
 <div id="popup_create" class="modal">
+    
     <div class="modal-background"></div>
     <div class="modal-card">
         <header class="modal-card-head">
@@ -59,7 +60,7 @@
             <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
-            
+        <div id="err"></div>
                 <div class="field is-horizontal">
                     <div class="field-label is-normal">
                         <label class="label">Identité</label>
@@ -73,17 +74,17 @@
                                         <i class="fas fa-user"></i>
                                     </span>
                                 </p>
-                                <p class="help">Le prénom n'est pas valide</p>
+                                <p class="help"></p>
                             </div>
                             <div class="field">
                                 <p class="control is-expanded has-icons-left has-icons-right">
-                                    <input class="input is-success" type="text" placeholder="LastName" id="txtlastName">
+                                    <input class="input" type="text" placeholder="LastName" id="txtlastname">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-id-card"></i>
                                     </span>
 
                                 </p>
-                                <p class="help is-danger">This email is invalid</p>
+                                <p class="help is-danger"></p>
                             </div>
                         </div>
 
@@ -94,7 +95,7 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control is-expanded has-icons-left has-icons-right">
-                                <input class="input is-success" type="email" placeholder="Email" id="txtEmail" value="alex@smith.com">
+                                <input class="input " type="email" placeholder="Email" id="txtEmail">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-envelope"></i>
                                 </span>
@@ -102,11 +103,25 @@
                                     <i class="fas fa-check"></i>
                                 </span>
                             </p>
-                            <p class="help is-danger">This email is invalid</p>
+                            <p class="help is-danger"></p>
                         </div>
                     </div>
                 </div>
 
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal"> mot de passe</div>
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control is-expanded has-icons-left has-icons-right">
+                                <input class="input " type="text" placeholder="Mot de passe" id="txtPwd" value="">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-key"></i>
+                                </span>
+                            </p>
+                            <p class="help is-danger"></p>
+                        </div>
+                    </div>
+                </div>
                 <div class="field is-horizontal">
                     <div class="field-label">
                         <label class="label">Role</label>
@@ -135,8 +150,8 @@
 
         </section>
         <footer class="modal-card-foot">
-      <button class="button is-success">Enregistrer</button>
-      <button class="button">Annuler</button>
+      <button class="button is-success" id='btnSave'>Enregistrer</button>
+      <button class="button"  id='btnCancel'>Annuler</button>
     </footer>
     </div>
    

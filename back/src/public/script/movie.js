@@ -46,6 +46,9 @@ $(document).ready(function (e) {
     $film = {};
     var selected = [];
     $eltUpdate = -1;
+    var code = 0;
+    var msg;
+    var liste = [];
     
     function clearSelected() {
         // supression dans la sélection
@@ -370,10 +373,6 @@ $(document).ready(function (e) {
         });
     }
 
-    var code = 0;
-    var msg;
-    var liste = [];
-   
     clearMessageErr();
     $.ajax({
         dataType: "JSON",

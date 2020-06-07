@@ -110,19 +110,41 @@ class UserApp implements JsonSerializable
         return  $this->getValid();
     }
 
-    public function getCountAll($filter)
-    {
+    public function getCountAll($filter, $role)
+    { 
+        $whereComplement =" 1=1 ";
+        if (isset($role))
+        {
+            if (strcmp($role,'back')==0)
+            {
+                // les compte qui ne sont pas des clients
+                $whereComplement = " not exists(
+                    SELECT * FROM user_has_role ur 
+                    inner join role_app r on r.idrole= ur.idrole 
+                    where r.code = 'CLI' and u.iduser =ur.iduser)";
+            }
+            if (strcmp($role,'front')==0)
+            {
+                // les compte  des clients
+                $whereComplement = "  exists(
+                    SELECT * FROM user_has_role ur 
+                    inner join role_app r on r.idrole= ur.idrole 
+                    where r.code = 'CLI' and u.iduser =ur.iduser)";
+            }
+        }
+        
         if (isset($filter) && !empty($filter)) {
 
-            $query = "SELECT count(*) as count from user_app where  (email REGEXP ? or firstName REGEXP ? or lastName  REGEXP ?  ) order by firstname";
+            $query = "SELECT count(*) as count from user_app u where  (email REGEXP ? or firstName REGEXP ? or lastName  REGEXP ?  ) and $whereComplement  order by firstname";
 
             $result = $this->mydb->fetchAll($query, $filter, $filter, $filter);
         } else {
 
-            $query = "SELECT count(*) as count from user_app ";
+            $query = "SELECT count(*) as count from user_app u where $whereComplement ";
 
             $result = $this->mydb->fetchAll($query);
         }
+    
         if ($result && count($result) > 0) {
             return $result[0]->count;
         }
@@ -130,22 +152,43 @@ class UserApp implements JsonSerializable
         return 0;
     }
 
-    public function getAll($compteur, $nbligne, $filter, $order)
+    public function getAll($compteur, $nbligne, $filter, $order, $role)
     {
+        $whereComplement =" 1=1 ";
+        if (isset($role))
+        {
+            if (strcmp($role,'back')==0)
+            {
+                // les compte qui ne sont pas des clients
+                $whereComplement = " not exists(
+                    SELECT * FROM user_has_role ur 
+                    inner join role_app r on r.idrole= ur.idrole 
+                    where r.code = 'CLI' and u.iduser =ur.iduser)";
+            }
+            if (strcmp($role,'front')==0)
+            {
+                // les compte  des clients
+                $whereComplement = "  exists(
+                    SELECT * FROM user_has_role ur 
+                    inner join role_app r on r.idrole= ur.idrole 
+                    where r.code = 'CLI' and u.iduser =ur.iduser)";
+            }
+        }
+
         if (isset($filter) && !empty($filter) && isset($order) && !empty($order)) {
-            $query = "SELECT iduser, firstName, lastName,  email  FROM user_app where  (firstName REGEXP ? or lastName REGEXP ? or email REGEXP ?  ) order by ? limit ?, ?";
+            $query = "SELECT iduser, firstName, lastName,  email  FROM user_app u where  (firstName REGEXP ? or lastName REGEXP ? or email REGEXP ?  ) and $whereComplement  order by ? limit ?, ?";
 
             $result = $this->mydb->fetchAll($query, $filter, $filter, $filter, $order, (int) $compteur, (int) $nbligne);
         } else if (isset($filter) && !empty($filter)) {
-            $query = "SELECT iduser, firstName, lastName,  email  FROM user_app where  (email REGEXP ? or lastName REGEXP ? or firstName REGEXP ?  ) order by firstName limit ?, ?";
+            $query = "SELECT iduser, firstName, lastName,  email  FROM user_app u where  (email REGEXP ? or lastName REGEXP ? or firstName REGEXP ?  ) and $whereComplement  order by firstName limit ?, ?";
 
             $result = $this->mydb->fetchAll($query, $filter, $filter, $filter, (int) $compteur, (int) $nbligne);
         } else if (isset($order) && !empty($order)) {
-            $query = "SELECT iduser, firstName, lastName,  email  FROM user_app order by ? limit ?, ?";
+            $query = "SELECT iduser, firstName, lastName,  email  FROM user_app u where $whereComplement order by ? limit ?, ?";
 
             $result = $this->mydb->fetchAll($query, $order, (int) $compteur, (int) $nbligne);
         } else {
-            $query = "SELECT iduser, firstName, lastName,  email  FROM user_app  order by firstName limit ?, ?";
+            $query = "SELECT iduser, firstName, lastName,  email  FROM user_app u where $whereComplement  order by firstName limit ?, ?";
 
             $result = $this->mydb->fetchAll($query, (int) $compteur, (int) $nbligne);
         }
