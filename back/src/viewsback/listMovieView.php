@@ -3,52 +3,60 @@
 
 <div id="page" class="box">
     <div id="err"></div>
-    <p class="title is-1">Liste des films</p>
-    <p class="subtitle is-3">Gestion des films</p>
-    <nav>
-        <div class="nav-item">
-            <div class="field is-grouped">
-                <p class="control">
-                    <a class="bd-tw-button button is-info" id="addMovie">
-                        <span class="icon">
-                            <i class="fas fa-plus fa-2x"></i>
-                        </span>
-                        <span>
-                            Ajouter
-                        </span>
-                    </a>
-                </p>
-                <p class="control">
-                    <a class="button is-primary" id="updateMovie" href="#">
-                        <span class="icon">
-                            <i class="fas fa-pen fa-2x"></i>
-                        </span>
-                        <span>
-                            Modifier
-                        </span>
-                    </a>
-                </p>
-                <p class="control" style='display:none'>
-                    <a class="button is-danger" id="deleteMovie" href="#">
-                        <span class="icon">
-                            <i class="fas fa-trash fa-2x"></i>
+    <div class="section has-text-centered  has-background-grey-lighter">
+        <p class="title is-1">Liste des films</p>
+        <p class="subtitle is-3">Gestion des films</p>
 
-                        </span>
-                        <span>
-                            Supprimer
-                        </span>
-                    </a>
-                </p>
-            </div>
+        <div id="pagefilm" class="box">
+            <nav>
+                <div class="nav-item">
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <a class="bd-tw-button button is-info" id="addMovie">
+                                <span class="icon">
+                                    <i class="fas fa-plus fa-2x"></i>
+                                </span>
+                                <span>
+                                    Ajouter
+                                </span>
+                            </a>
+                        </p>
+                        <p class="control">
+                            <a class="button is-primary" id="updateMovie" href="#">
+                                <span class="icon">
+                                    <i class="fas fa-pen fa-2x"></i>
+                                </span>
+                                <span>
+                                    Modifier
+                                </span>
+                            </a>
+                        </p>
+                        <p class="control" style='display:none'>
+                            <a class="button is-danger" id="deleteMovie" href="#">
+                                <span class="icon">
+                                    <i class="fas fa-trash fa-2x"></i>
+
+                                </span>
+                                <span>
+                                    Supprimer
+                                </span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </nav>
         </div>
-    </nav>
-    <div class="table-container">
-        <table id="tabmovie" class="table is-fullwidth">
-        </table>
+        
+        <div class="table-container">
+                <table id="tabmovie" class="table is-fullwidth">
+                </table>
+            </div>
     </div>
 </div>
 
 <div id="popup_create" class="modal">
+    <div id="errModal"></div>
+
     <div class="modal-background"></div>
     <div class="modal-card">
         <header class="modal-card-head">
@@ -64,9 +72,9 @@
                 <div class="field-body">
                     <div class="field">
                         <p class="control is-expanded has-icons-left">
-                            <input class="input" type="text" placeholder="Titre" id="title_movie">
+                            <input class="input" type="text" placeholder="Titre" maxlength="40" id="title_movie">
                             <span class="icon is-small is-left">
-                                <i class="fas fas-movie"></i>
+                                <i class="fas fa-film"></i>
                             </span>
                         </p>
                     </div>
@@ -80,7 +88,7 @@
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <textarea class="textarea" placeholder="description" id="describ_movie"></textarea>
+                            <textarea class="textarea" placeholder="description" id="describ_movie" maxlength="200"></textarea>
                         </div>
                     </div>
                 </div>
@@ -183,7 +191,7 @@
                         <p class="control is-expanded has-icons-left">
                             <input class="input" type="text" placeholder="Note" id="note_movie">
                             <span class="icon is-small is-left">
-                                <i class="fas fas-star"></i>
+                                <i class="fas fa-star"></i>
                             </span>
                         </p>
                     </div>
@@ -200,7 +208,7 @@
                         <p class="control is-expanded has-icons-left">
                             <input class="input" type="text" placeholder="Réf. du stock" id="stockRef">
                             <span class="icon is-small is-left">
-                                <i class="fas fas-movie"></i>
+                                <i class="fas fa-clipboard-list"></i>
                             </span>
                         </p>
                     </div>
@@ -214,9 +222,9 @@
                 <div class="field-body">
                     <div class="field">
                         <p class="control is-expanded has-icons-left">
-                            <input class="input" type="text" placeholder="Nombre de DVD en stock" id="stockNb">
+                            <input class="input" type="text" placeholder="DVD en stock" id="stockNb">
                             <span class="icon is-small is-left">
-                                <i class="fas fas-movie"></i>
+                                <i class="fas fa-warehouse"></i>
                             </span>
                         </p>
                     </div>
@@ -225,9 +233,9 @@
                 <div class="field-body">
                     <div class="field">
                         <p class="control is-expanded has-icons-left">
-                            <input class="input" type="text" placeholder="Nombre de DVD en stock" id="stockNbwait">
+                            <input class="input" type="text" placeholder="en attente" id="stockNbwait">
                             <span class="icon is-small is-left">
-                                <i class="fas fas-movie"></i>
+                                <i class="fas fa-dolly"></i>
                             </span>
                         </p>
                     </div>
@@ -236,9 +244,9 @@
                 <div class="field-body">
                     <div class="field">
                         <p class="control is-expanded has-icons-left">
-                            <input class="input" type="text" placeholder="Nombre de DVD en stock" id="stockNbSend">
+                            <input class="input" type="text" placeholder="DVD envoyés" id="stockNbSend">
                             <span class="icon is-small is-left">
-                                <i class="fas fas-movie"></i>
+                                <i class="fas fa-truck-pickup"></i>
                             </span>
                         </p>
                     </div>
@@ -246,13 +254,13 @@
                 </div>
             </div>
         </section>
-            <footer class="modal-card-foot">
-                <button class="button is-success" id="btnSavePopup">Enregistrer</button>
-                <button class="button" id="btnCancelPopup">Annuler</button>
-            </footer>
+        <footer class="modal-card-foot">
+            <button class="button is-success" id="btnSavePopup">Enregistrer</button>
+            <button class="button" id="btnCancelPopup">Annuler</button>
+        </footer>
     </div>
 
-
+    <div id="encode" style="display: none;"></div>
 
 </div>
 

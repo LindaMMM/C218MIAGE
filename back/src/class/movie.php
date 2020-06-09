@@ -204,11 +204,12 @@ where m.idcategory in (1) and (m.name regexp 'te' or m.realisateur regexp 'te' o
 and g.genre_idgenre in (1)*/
         if ($filter->genre != "") {
             if ($filter->seach != "") {
+                $search =   htmlspecialchars_decode(htmlentities($filter->seach, ENT_NOQUOTES, 'UTF-8'));
                 $query = "select m.* from movie m
             inner join movie_has_genre g on g.Movie_idMovie = m.idMovie
             where m.idcategory in (?) and (m.name regexp ? or m.realisateur regexp ? or m.producteur regexp ? )
             and g.genre_idgenre in (?)";
-                $result = $this->mydb->fetchAll($query, $filter->categorie, $filter->search, $filter->search, $filter->search, $filter->genre);
+                $result = $this->mydb->fetchAll($query, $filter->categorie, $search, $search, $search, $filter->genre);
             } else {
                 $query = "select m.* from movie m
             inner join movie_has_genre g on g.Movie_idMovie = m.idMovie
@@ -221,9 +222,10 @@ and g.genre_idgenre in (1)*/
             }
         } else {
             if ($filter->seach != "") {
+                $search =   htmlspecialchars_decode(htmlentities($filter->seach, ENT_NOQUOTES, 'UTF-8'));
                 $query = "select m.* from movie m
             where m.idcategory in (?) and (m.name regexp ? or m.realisateur regexp ? or m.producteur regexp ? )";
-                $result = $this->mydb->fetchAll($query, $filter->categorie, $filter->search, $filter->search, $filter->search);
+                $result = $this->mydb->fetchAll($query, $filter->categorie, $search, $search, $search);
             } else {
                 $query = "select m.* from movie m
             where m.idcategory in (?) ";

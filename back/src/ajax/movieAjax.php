@@ -32,7 +32,7 @@ try {
             $length = (int) $_POST['length'];
         }
         $filter = $_POST['search']['value'];
-
+        $filter = htmlspecialchars_decode(htmlentities($filter, ENT_NOQUOTES, 'UTF-8'));
 
         $bd = new Database(DB_DVD);
         $movie = new Movie($bd);
@@ -205,11 +205,20 @@ try {
             if (!isset($_POST["movie"])) {
                 return;
             }
+
             $movie = json_decode($_POST["movie"]);
+
+            // encoage
+            $movie->title = htmlspecialchars_decode(htmlentities($movie->title, ENT_NOQUOTES, 'UTF-8'));
+            $movie->desc = htmlspecialchars_decode(htmlentities($movie->desc, ENT_NOQUOTES, 'UTF-8'));
+            $movie->realisateur = htmlspecialchars_decode(htmlentities($movie->realisateur, ENT_NOQUOTES, 'UTF-8'));
+            $movie->producteur = htmlspecialchars_decode(htmlentities($movie->producteur, ENT_NOQUOTES, 'UTF-8'));
+            
+
             if (MovieService::SaveMovie($movie))
             {
                 $respond->code = 1;
-                $respond->message = "OK";
+                $respond->message = "La sauvegarde est effectuée";
             }
             else
             {
