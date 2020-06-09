@@ -372,7 +372,10 @@ $(document).ready(function (e) {
             }
         });
     }
-
+    $(".modal-card-head .delete").click(function () {
+        $(".modal").removeClass("is-active");
+    });
+    
     clearMessageErr();
     $.ajax({
         dataType: "JSON",

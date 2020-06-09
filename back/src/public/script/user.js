@@ -152,7 +152,7 @@ $(document).ready(function (e) {
     function getroles() {
         var role = '';
         _.forEach($('#rolesField').find('input:checked'), function (itemrole) {
-            role += itemrole.getAttribute("val");
+            role += itemrole.id.substr(4,3);
             role += ", ";
         });
         return role;
@@ -161,9 +161,10 @@ $(document).ready(function (e) {
     /**** Ajout de la popup  */
     $('#btnSave').on('click',function(){
     
-    
+        $('#rolesField').removeClass("is-danger");
+
         if (!checkInput()) {
-            displayMessageErr("L'ajout n'est pas possible");
+            displayMessageErr("L'ajout n'est pas possible",'#errModal');
             return;
         }
 
@@ -182,6 +183,13 @@ $(document).ready(function (e) {
         user.lastname = $("#txtlastname").val();
         user.email = $("#txtEmail").val();
         user.pwd = $("#txtPwd").val();
+        user.roles = getroles();
+        if (_.isEmpty(user.roles))
+        {
+            $('#rolesField').addClass("is-danger");
+            displayMessageErr("L'ajout n'est pas possible",'#errModal');
+            return;
+        }
 
         /*Transmission de la sauvegarde*/
         console.log("save");
@@ -209,10 +217,15 @@ $(document).ready(function (e) {
                 if (code > 0) {
                     /*Fermer la boite de dialogue*/
                     $("#popup_create").removeClass("is-active");
+                    clearSelected();
+                    tableConnexion.fnDraw(true);
+                    displayMessageInfo(msg);
+                    $eltUpdate = -1;
                 }
-                tableConnexion.fnDraw(true);
-                displayMessageInfo(msg);
-                $eltUpdate = -1;
+                else{
+                    displayMessageErr(msg,'#errModal');
+                }
+                
             }
 
         });
@@ -222,7 +235,10 @@ $(document).ready(function (e) {
     // lecture de l'utilisateur
     //--------------------------------------
     function getUser(id) {
-        $('#rolesField').find('input[type="checkbox"]').removeAttr('checked');
+        $('input[type="checkbox"]').each(function () {
+            $(this).prop('checked', false);
+        });
+        
         //Lecture 
         if (id != 0) {
             var user = {};
@@ -246,11 +262,11 @@ $(document).ready(function (e) {
                 complete: function () {
                     if (code > 0) {
                         $("#txtfirstname").val(user.firstName);
-                        $("#txtlastName").val(user.lastName);
+                        $("#txtlastname").val(user.lastName);
                         $("#txtEmail").val(user.email);
                         $("#txtPwd").val(user.pwd);
                         _.forEach(user.roles, function (role) {
-                            $('#cbx_' + role.codRole).attr('checked', 'checked')
+                            $('#cbx_' + role.codRole).prop('checked', true)
                         })
                     }
                     else {
@@ -262,7 +278,7 @@ $(document).ready(function (e) {
         }
         else {
             $("#txtfirstname").val('');
-            $("#txtlastName").val('');
+            $("#txtlastname").val('');
             $("#txtEmail").val('');
             $("#txtPwd").val('');
         }
@@ -271,13 +287,24 @@ $(document).ready(function (e) {
     /********************************************************************************************* */
     /*                          Evenements de la page                                               */
     /********************************************************************************************* */
+    function clearpopup(){
+        clearMessageErr();
+        $('.is-danger').each(function () {
+            $(this).removeClass('is-danger');
+        });
+        $('#errModal').html('');
+    }
+
     $("#addUser").click(function () {
+        clearpopup();
         $('#title_popup').html("Création d'un utilisateur");
+        $eltUpdate =-1;
         getUser(0);
         $("#popup_create").addClass("is-active");
     });
 
     $("#updateUser").click(function () {
+        clearpopup();
         if (selected.length == 0) {
             displayMessageErr('Aucun utilisateur a été sélectionné.');
         }
@@ -286,9 +313,6 @@ $(document).ready(function (e) {
             $eltUpdate = selected[0];
             getUser($eltUpdate);
             $("#popup_create").addClass("is-active");
-            $(".modal-close").click(function () {
-                $(".modal").removeClass("is-active");
-            });
         }
     });
 
@@ -300,12 +324,13 @@ $(document).ready(function (e) {
             $eltUpdate = selected[0];
             getUser($eltUpdate);
             $("#popup_delete").addClass("is-active");
-            $(".modal-close").click(function () {
-                $(".modal").removeClass("is-active");
-            });
+          
         }
     });
 
+    $(".modal-card-head .delete").click(function () {
+        $(".modal").removeClass("is-active");
+    });
     // Mise à jour de l'affichage
     initListRole();
     clearMessageErr();

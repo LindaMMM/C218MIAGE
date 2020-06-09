@@ -47,7 +47,7 @@ class UserApp implements JsonSerializable
     {
         try {
 
-            $query = "SELECT iduser, firstName, lastName, pwd, email, user_pwd_tmp  FROM user_app where  iduser=?";
+            $query = "SELECT iduser, firstName, lastName, pwd, email, user_pwd_tmp  FROM user_app where  iduser = ?";
 
             $result = $this->mydb->fetchAll($query, $id);
             if ($result && count($result) > 0) {
@@ -71,7 +71,7 @@ class UserApp implements JsonSerializable
     {
         try {
 
-            $query = "SELECT iduser, firstName, lastName, pwd, email, user_pwd_tmp FROM user_app where  email=?";
+            $query = "SELECT iduser, firstName, lastName, pwd, email, user_pwd_tmp FROM user_app where  email = ?";
 
             $result = $this->mydb->fetchAll($query, $email);
             if ($result && count($result) > 0) {
@@ -227,13 +227,33 @@ class UserApp implements JsonSerializable
             }
             
         }
+        return false;
     }
 
     public function update($value)
     {
-
+        $continue =  false;
+        if (strcmp($this->email,$value->email) == 0){
+            $continue =  true;
+        }
+        else if ($this->testEmail($value->email)) {
+            $continue =  true;
+        }
+        if ($continue )
+        {
+            $pwdcrypt = password_hash($value->pwd, PASSWORD_DEFAULT);
+            $query = "update `user_app` set `firstName`= ?, `lastName`= ? , `email` = ? , `pwd` = ?, `user_pwd_tmp`= 0 where iduser = ? ";
+            $count = $this->mydb->execReturnBool($query,$value->firstname,$value->lastname, $value->email ,$pwdcrypt, intval($this->id) );
+            if ($count === true)
+            {
+                $this->clearRole();
+                return $this->insertRole($value->roles);
+            }           
+        }
+        return false;
     }
 
+    
     public function testEmail($email)
     {
         $query = "SELECT count(*) as count from user_app where  email=? ";
@@ -249,17 +269,21 @@ class UserApp implements JsonSerializable
         return  $this->mydb->execReturnBool("delete from `user_has_role` where `iduser` = ?", $this->id);
     }
 
+   
     public function insertRole($roles){
-        $queryInsert = "INSERT INTO `user_has_role` (`idrole`, `iduser`) VALUES (?, ?)";
 
-        if (is_array($roles))
-        {
-            foreach ($roles as &$value) {
-                $result = $this->mydb->execReturnBool($queryInsert, $value,$this->id );
-                if ($result == false) {
-                    return (false);
+        $roles_array = explode(', ',$roles );
+        if (is_array($roles_array) && count($roles_array) > 0) {
+            $queryInsert = "INSERT INTO `user_has_role` (`iduser`,`idrole` ) VALUES (?, ( SELECT idrole FROM role_app where code = ? ))";
+            foreach ($roles_array as $role) {
+                
+                if (isset($role)&& $role!="") {
+                    if ($this->mydb->execReturnBool($queryInsert, $this->id, $role) == false) {
+                        return false;
+                    }
                 }
             }
+            return true;
         }
         else
         {

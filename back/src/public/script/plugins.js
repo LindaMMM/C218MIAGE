@@ -102,13 +102,19 @@ function checkStrength(password)
     return strength;
 }
 
-function displayMessageErr(msg){
+function displayMessageErr(msg ,selector){
   html = '<div class="notification is-danger">\n\
   <button class="delete">\n\
   </button>' + msg + '\n\
   </span>\n\
 </div>';
-$('#err').html(html);
+if (selector === undefined){
+  $('#err').html(html);
+}
+else{
+  $(selector).html(html);
+}
+
 };
 
 function displayMessageInfo(msg){

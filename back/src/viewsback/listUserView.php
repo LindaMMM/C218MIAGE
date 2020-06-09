@@ -60,7 +60,7 @@
             <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
-        <div id="err"></div>
+        <div id="errModal"></div>
                 <div class="field is-horizontal">
                     <div class="field-label is-normal">
                         <label class="label">Identité</label>

@@ -114,7 +114,10 @@ try {
             } else {
                 $respond->message = "L'ajout de l'utilisateur est effectué";
             }
-            $respond->value = UserService::AddUser($value);
+            if($respond->value = UserService::AddUser($value) == false){
+                $respond->code = -1;
+                $respond->message = "l'utilisateur n'a pas pu être enregistré.";
+            }
         } catch (Exception $ex) {
             $respond->code = -1;
             $respond->message = $ex->getMessage();
