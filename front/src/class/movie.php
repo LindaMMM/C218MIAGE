@@ -198,24 +198,20 @@ class Movie implements JsonSerializable
 
     public function getAllSearch($filter)
     {
-        /*select m.* from movie m
-inner join movie_has_genre g on g.Movie_idMovie = m.idMovie
-where m.idcategory in (1) and (m.name regexp 'te' or m.realisateur regexp 'te' or m.producteur regexp 'te' )
-and g.genre_idgenre in (1)*/
         if ($filter->genre != "") {
             if ($filter->search != "") {
                 $search =   htmlspecialchars_decode(htmlentities($filter->search, ENT_NOQUOTES, 'UTF-8'));
                 $query = "select m.* from movie m
             inner join movie_has_genre g on g.Movie_idMovie = m.idMovie
-            where m.idcategory in (?) and (m.name regexp ? or m.realisateur regexp ? or m.producteur regexp ? )
+            where m.idcategory in (".$filter->categorie.") and (m.name REGEXP ? or m.realisateur REGEXP ? or m.producteur REGEXP ? )
             and g.genre_idgenre in (?)";
-                $result = $this->mydb->fetchAll($query, $filter->categorie, $search, $search, $search, $filter->genre);
+                $result = $this->mydb->fetchAll($query,  $search, $search, $search, $filter->genre);
             } else {
                 $query = "select m.* from movie m
             inner join movie_has_genre g on g.Movie_idMovie = m.idMovie
-            where m.idcategory in (?) 
+            where m.idcategory in (".$filter->categorie.") 
             and g.genre_idgenre in (?)";
-                $result = $this->mydb->fetchAll($query, $filter->categorie, $filter->genre);
+                $result = $this->mydb->fetchAll($query, $filter->genre);
             }
             if ($result && count($result) > 0) {
                 return $result;
@@ -224,12 +220,12 @@ and g.genre_idgenre in (1)*/
             if ($filter->search != "") {
                 $search =   htmlspecialchars_decode(htmlentities($filter->search, ENT_NOQUOTES, 'UTF-8'));
                 $query = "select m.* from movie m
-            where m.idcategory in (?) and (m.name regexp ? or m.realisateur regexp ? or m.producteur regexp ? )";
-                $result = $this->mydb->fetchAll($query, $filter->categorie, $search, $search, $search);
+            where m.idcategory in (".$filter->categorie.") and (m.name REGEXP ? or m.realisateur REGEXP ? or m.producteur REGEXP ? )";
+                $result = $this->mydb->fetchAll($query,  $search, $search, $search);
             } else {
                 $query = "select m.* from movie m
-            where m.idcategory in (?) ";
-                $result = $this->mydb->fetchAll($query, $filter->categorie);
+            where m.idcategory in (".$filter->categorie.") ";
+                $result = $this->mydb->fetchAll($query);
             }
             if ($result && count($result) > 0) {
                 return $result;
