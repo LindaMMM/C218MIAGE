@@ -16,12 +16,15 @@ try {
     }
 
     if ($type == 'listRole') {
-        $listRole = UserService::GetAllRole();
-        echo json_encode($listRole);
-        return;
+        
+        $listRole = UserService::GetAllRole($_POST['role']);
+        $respond->code = 1;
+        $respond->message = "liste des roles";
+        $respond->value = json_encode($listRole);
     }
 
     if ($type == 'list') {
+        $role = $_POST['role'];
         $start = 0;
         $length = 10;
         if (
@@ -42,8 +45,10 @@ try {
         $bd = new Database(DB_DVD);
         $user = new UserApp($bd);
 
-        $countTotal = $user->getCountAll("");
-        $countfilter = $user->getCountAll($filter);
+
+
+        $countTotal = $user->getCountAll("", $role );
+        $countfilter = $user->getCountAll($filter, $role);
         $order = '';
 
         /*Ordre*/
@@ -66,7 +71,7 @@ try {
             "aaData" => array()
         );
 
-        $result = $user->GetAll($start, $length, $filter, $order);
+        $result = $user->GetAll($start, $length, $filter, $order,$role);
 
         $rows = array();
         foreach ($result as $value) {
@@ -109,7 +114,10 @@ try {
             } else {
                 $respond->message = "L'ajout de l'utilisateur est effectué";
             }
-            $respond->value = UserService::AddUser($value);
+            if($respond->value = UserService::AddUser($value) == false){
+                $respond->code = -1;
+                $respond->message = "l'utilisateur n'a pas pu être enregistré.";
+            }
         } catch (Exception $ex) {
             $respond->code = -1;
             $respond->message = $ex->getMessage();
