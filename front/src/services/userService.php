@@ -97,7 +97,7 @@ class UserService
             $user_val->firstname = $client->firstname;
             $user_val->lastname =  $client->lastname;
             $user_val->pwd =  $client->pwd;
-            $user_val->roles =  'client';
+            $user_val->roles =  '';
             if ($user->add($user_val)) {
                 $client->iduser = $user->getId();
                 if ($clt->add($client)) {

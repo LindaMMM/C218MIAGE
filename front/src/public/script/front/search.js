@@ -117,11 +117,9 @@ $(document).ready(function (e) {
                     $("input[type='checkbox']").on("change", function () {
                         console.log("change");
                         search();
-
                     })
-
+                    
                     search();
-                    // displayMessageInfo(msg);
 
                 } else {
                     displayMessageErr(msg);
@@ -177,10 +175,6 @@ $(document).ready(function (e) {
                 }
             }
         });
-
-
-
-
     };
 
     $('#txtsearchMovie').on('keypress',function(e){

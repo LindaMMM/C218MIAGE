@@ -111,20 +111,17 @@ class UserApp implements JsonSerializable
     }
 
     public function getCountAll($filter, $role)
-    { 
-        $whereComplement =" 1=1 ";
-        if (isset($role))
-        {
-            if (strcmp($role,'back')==0)
-            {
+    {
+        $whereComplement = " 1=1 ";
+        if (isset($role)) {
+            if (strcmp($role, 'back') == 0) {
                 // les compte qui ne sont pas des clients
                 $whereComplement = " not exists(
                     SELECT * FROM user_has_role ur 
                     inner join role_app r on r.idrole= ur.idrole 
                     where r.code = 'CLI' and u.iduser =ur.iduser)";
             }
-            if (strcmp($role,'front')==0)
-            {
+            if (strcmp($role, 'front') == 0) {
                 // les compte  des clients
                 $whereComplement = "  exists(
                     SELECT * FROM user_has_role ur 
@@ -132,7 +129,7 @@ class UserApp implements JsonSerializable
                     where r.code = 'CLI' and u.iduser =ur.iduser)";
             }
         }
-        
+
         if (isset($filter) && !empty($filter)) {
 
             $query = "SELECT count(*) as count from user_app u where  (email REGEXP ? or firstName REGEXP ? or lastName  REGEXP ?  ) and $whereComplement  order by firstname";
@@ -144,7 +141,7 @@ class UserApp implements JsonSerializable
 
             $result = $this->mydb->fetchAll($query);
         }
-    
+
         if ($result && count($result) > 0) {
             return $result[0]->count;
         }
@@ -154,19 +151,16 @@ class UserApp implements JsonSerializable
 
     public function getAll($compteur, $nbligne, $filter, $order, $role)
     {
-        $whereComplement =" 1=1 ";
-        if (isset($role))
-        {
-            if (strcmp($role,'back')==0)
-            {
+        $whereComplement = " 1=1 ";
+        if (isset($role)) {
+            if (strcmp($role, 'back') == 0) {
                 // les compte qui ne sont pas des clients
                 $whereComplement = " not exists(
                     SELECT * FROM user_has_role ur 
                     inner join role_app r on r.idrole= ur.idrole 
                     where r.code = 'CLI' and u.iduser =ur.iduser)";
             }
-            if (strcmp($role,'front')==0)
-            {
+            if (strcmp($role, 'front') == 0) {
                 // les compte  des clients
                 $whereComplement = "  exists(
                     SELECT * FROM user_has_role ur 
@@ -219,13 +213,11 @@ class UserApp implements JsonSerializable
         if ($this->testEmail($value->email)) {
             $pwdcrypt = password_hash($value->pwd, PASSWORD_DEFAULT);
             $query = "INSERT INTO `user_app` (`firstName`, `lastName`, `email`, `pwd`, `user_pwd_tmp`) VALUES (?, ?, ?, ?, 0)";
-            $count = $this->mydb->execReturnBool($query,$value->firstname,$value->lastname, $value->email ,$pwdcrypt );
-            if ($count === true)
-            {
+            $count = $this->mydb->execReturnBool($query, $value->firstname, $value->lastname, $value->email, $pwdcrypt);
+            if ($count === true) {
                 $this->id = $this->mydb->lastInsertId();
                 return $this->insertRole($value->roles);
             }
-            
         }
         return false;
     }
@@ -233,27 +225,24 @@ class UserApp implements JsonSerializable
     public function update($value)
     {
         $continue =  false;
-        if (strcmp($this->email,$value->email) == 0){
+        if (strcmp($this->email, $value->email) == 0) {
+            $continue =  true;
+        } else if ($this->testEmail($value->email)) {
             $continue =  true;
         }
-        else if ($this->testEmail($value->email)) {
-            $continue =  true;
-        }
-        if ($continue )
-        {
+        if ($continue) {
             $pwdcrypt = password_hash($value->pwd, PASSWORD_DEFAULT);
             $query = "update `user_app` set `firstName`= ?, `lastName`= ? , `email` = ? , `pwd` = ?, `user_pwd_tmp`= 0 where iduser = ? ";
-            $count = $this->mydb->execReturnBool($query,$value->firstname,$value->lastname, $value->email ,$pwdcrypt, intval($this->id) );
-            if ($count === true)
-            {
+            $count = $this->mydb->execReturnBool($query, $value->firstname, $value->lastname, $value->email, $pwdcrypt, intval($this->id));
+            if ($count === true) {
                 $this->clearRole();
                 return $this->insertRole($value->roles);
-            }           
+            }
         }
         return false;
     }
 
-    
+
     public function testEmail($email)
     {
         $query = "SELECT count(*) as count from user_app where  email=? ";
@@ -265,40 +254,44 @@ class UserApp implements JsonSerializable
         return false;
     }
 
-    public function clearRole(){
+    public function clearRole()
+    {
         return  $this->mydb->execReturnBool("delete from `user_has_role` where `iduser` = ?", $this->id);
     }
 
-   
-    public function insertRole($roles){
 
-        $roles_array = explode(', ',$roles );
-        if (is_array($roles_array) && count($roles_array) > 0) {
-            $queryInsert = "INSERT INTO `user_has_role` (`iduser`,`idrole` ) VALUES (?, ( SELECT idrole FROM role_app where code = ? ))";
-            foreach ($roles_array as $role) {
-                
-                if (isset($role)&& $role!="") {
-                    if ($this->mydb->execReturnBool($queryInsert, $this->id, $role) == false) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        else
-        {
+    public function insertRole($roles)
+    {
+
+        if (strcmp($roles, '') == 0) {
+            // la  chain est vide 
             $queryInsertClient = "INSERT INTO `user_has_role` (`idrole`, `iduser`) VALUES (( SELECT idrole FROM role_app where code = 'CLI' ), ?)";
             // Cas du client
-            $result = $this->mydb->execReturnBool($queryInsertClient,$this->id);
-                if ($result == false) {
-                    return (false);
+            $result = $this->mydb->execReturnBool($queryInsertClient, $this->id);
+            if ($result == false) {
+                return (false);
+            }
+        } else {
+            $roles_array = explode(', ', $roles);
+            if (is_array($roles_array) && count($roles_array) > 0) {
+                $queryInsert = "INSERT INTO `user_has_role` (`iduser`,`idrole` ) VALUES (?, ( SELECT idrole FROM role_app where code = ? ))";
+                foreach ($roles_array as $role) {
+
+                    if (isset($role) && $role != "") {
+                        if ($this->mydb->execReturnBool($queryInsert, $this->id, $role) == false) {
+                            return false;
+                        }
+                    }
                 }
+                return true;
+            }
         }
 
         return true;
     }
 
-    public function getClient(){
+    public function getClient()
+    {
         return UserService::getClientbyIdUser($this->id, $this->mydb);
     }
 }

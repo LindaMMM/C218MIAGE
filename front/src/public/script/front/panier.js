@@ -13,11 +13,9 @@ window.loadPanier = function (liste) {
     _.forEach(liste, function (itemMovie) {
         content += compileTpl(itemMovie);
     });
-    $('#boxpanier').html(content);
-
-
-   
+    $('#boxpanier').html(content);   
 };
+
 window.deletefilm = function (idfilm){
     $.ajax({
         dataType: "JSON",

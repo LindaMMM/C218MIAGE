@@ -118,7 +118,7 @@ class MovieStock implements JsonSerializable
     public function update($value)
     {
         $queryInsert = " UPDATE `stockmovie`  SET `nbStock` = ?, `nbwaitSend` = ?,   `nbSend` = ?  WHERE `idstockMovie` = ?";
-        if ($this->mydb->execReturnBool($queryInsert, $value->nbstock,  $value->nbwait, $value->nbsend, $value->idstock) != false) {
+        if ($this->mydb->execReturnBool($queryInsert, $value->nbstock,  $value->nbwait, $value->nbsend, $value->id) != false) {
             return true;
         }
         return false;
